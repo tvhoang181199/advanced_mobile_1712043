@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:DARKEN/Screens/SignUpPage.dart';
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 
@@ -19,7 +20,7 @@ class _IntroPage extends State<IntroPage> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 25.0,
-            color: Color.fromRGBO(35, 35, 35, 1),
+            color: Color.fromRGBO(53, 53, 53, 1),
             fontWeight: FontWeight.bold,
             inherit: false,
           ),
@@ -57,7 +58,7 @@ class _IntroPage extends State<IntroPage> {
             borderRadius: BorderRadius.circular(5),
           ),
           child: Text(
-            "CREATE AN ACCOUNT",
+            "CREATE A NEW ACCOUNT",
             style: TextStyle(
               color: Color.fromRGBO(40, 75, 99, 1),
               fontSize: 15.0,
@@ -65,6 +66,7 @@ class _IntroPage extends State<IntroPage> {
             ),
           ),
           onPressed: (){
+            Navigator.of(context).pushNamed(SignUpPage.tag);
           },
         )
     );

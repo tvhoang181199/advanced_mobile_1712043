@@ -1,5 +1,9 @@
+import 'package:DARKEN/Screens/Home/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:DARKEN/BottomTabbar.dart';
+
+import 'package:DARKEN/Styling/AppColors.dart';
 
 class SignUpPage extends StatefulWidget {
   static String tag = '/signup-page';
@@ -31,27 +35,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'First Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -60,27 +64,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'Last Name',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -92,27 +96,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: "Birthday",
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -123,27 +127,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'Phone',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -152,27 +156,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'Email',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -182,27 +186,27 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
@@ -212,33 +216,33 @@ class _SignUpPage extends State<SignUpPage> {
       decoration: InputDecoration(
         labelText: 'Confirm Password',
         labelStyle: TextStyle(
-          color: Color.fromRGBO(40, 75, 99, 1),
+          color: AppColors.themeColor,
         ),
         contentPadding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide(
-            color: Color.fromRGBO(40, 75, 99, 1),
+            color: AppColors.themeColor,
             width: 1,
           ),
         ),
       ),
-      cursorColor: Color.fromRGBO(40, 75, 99, 1),
+      cursorColor: AppColors.themeColor,
       style: TextStyle(
-        color: Color.fromRGBO(40, 75, 99, 1),
+        color: AppColors.themeColor,
       ),
     );
 
     final signUpButton = RaisedButton(
       padding: EdgeInsets.fromLTRB(60, 15, 60, 15),
-      color: Color.fromRGBO(40, 75, 99, 1),
+      color: AppColors.themeColor,
       child: Text(
         "SIGNUP",
         style: TextStyle(
@@ -251,7 +255,7 @@ class _SignUpPage extends State<SignUpPage> {
         borderRadius: BorderRadius.circular(5),
       ),
       onPressed: (){
-
+        Navigator.of(context).pushNamed(BottomTabbar.tag);
       },
     );
 
@@ -259,7 +263,7 @@ class _SignUpPage extends State<SignUpPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('CREATE A NEW ACCOUNT'),
-          backgroundColor: Color.fromRGBO(40, 75, 99, 1),
+          backgroundColor: AppColors.themeColor,
         ),
         body: GestureDetector(
             onTap:() {

@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:DARKEN/Screens/SignUpPage.dart';
 import 'package:flutter/material.dart';
+
+import 'package:DARKEN/Styling/AppColors.dart';
 import 'LoginPage.dart';
 
 class IntroPage extends StatefulWidget {
@@ -20,7 +22,7 @@ class _IntroPage extends State<IntroPage> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 25.0,
-            color: Color.fromRGBO(53, 53, 53, 1),
+            color: AppColors.darkGreyColor,
             fontWeight: FontWeight.bold,
             inherit: false,
           ),

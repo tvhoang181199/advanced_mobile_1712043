@@ -20,7 +20,20 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
 
       body: SafeArea(
-        child:  Text("Home"),
+        child:  ListView(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              child: Text(
+                'HOME',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        )
       )
 
     );

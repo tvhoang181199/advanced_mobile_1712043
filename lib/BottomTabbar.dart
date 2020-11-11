@@ -40,9 +40,11 @@ class _BottomTabbar extends State<BottomTabbar> {
         child: _children.elementAt(_currentIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         selectedItemColor: AppColors.themeColor,
-        unselectedItemColor: AppColors.darkGreyColor,
-        backgroundColor: AppColors.greyColor,
+        unselectedItemColor: Colors.black38,
+        backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         onTap: _onTabTapped,
         currentIndex: _currentIndex, // this will be set when a new tab is tapped

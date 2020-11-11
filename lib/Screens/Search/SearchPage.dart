@@ -16,10 +16,7 @@ class _SearchPage extends State<SearchPage> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('search'),
-        backgroundColor: AppColors.themeColor,
-      ),
+      
     );
   }
 }

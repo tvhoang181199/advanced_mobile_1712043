@@ -5,8 +5,6 @@ import 'package:DARKEN/Screens/LoginPage.dart';
 import 'package:DARKEN/Screens/SignUpPage.dart';
 import 'package:DARKEN/BottomTabbar.dart';
 
-import 'package:DARKEN/Styling/AppColors.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -27,6 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'DARKEN',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'NunitoSans',
         primarySwatch: Colors.lightBlue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

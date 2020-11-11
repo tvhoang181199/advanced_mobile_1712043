@@ -16,10 +16,7 @@ class _BrowsePage extends State<BrowsePage> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('browse'),
-        backgroundColor: AppColors.themeColor,
-      ),
+
     );
   }
 }

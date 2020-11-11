@@ -37,7 +37,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/Icons/app_icon.png"
+  image_path: "assets/Icons/app-icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -45,10 +45,16 @@ flutter_icons:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/Icons/app_icon.png
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+    - assets/Icons/app-icon.png
+    - assets/Icons/default-avatar.png
+  fonts:
+    - family: NunitoSans
+      fonts:
+        - asset: fonts/NunitoSans-Regular.ttf
+        - asset: fonts/NunitoSans-Italic.ttf
+          style: italic
+        - asset: fonts/NunitoSans-Bold.ttf
+          weight: 700
   uses-material-design: true
 
 

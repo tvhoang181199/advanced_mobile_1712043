@@ -16,10 +16,7 @@ class _DownloadPage extends State<DownloadPage> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('download'),
-        backgroundColor: AppColors.themeColor,
-      ),
+
     );
   }
 }

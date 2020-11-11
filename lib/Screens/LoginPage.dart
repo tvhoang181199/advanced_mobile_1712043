@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:DARKEN/Screens/Home/HomePage.dart';
+import 'package:flutter/services.dart';
+
 import 'package:DARKEN/BottomTabbar.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
-import 'package:flutter/services.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   static String tag = '/login-page';
@@ -12,11 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  TextEditingController _emailTextController = new TextEditingController();
+  TextEditingController _passwordTextController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailTextController = new TextEditingController();
-    TextEditingController _passwordTextController = new TextEditingController();
-
     final node = FocusScope.of(context);
 
     Widget okButton = FlatButton(
@@ -40,15 +42,21 @@ class _LoginPage extends State<LoginPage> {
             fontWeight: FontWeight.bold
           ),
       ),
-      content: Text("The username or password you entered is incorrect"),
+      content: Text("The username or password you entered is incorrect!\nHint:\nemail: username\npassword: password"),
       actions: [
         okButton,
       ],
     );
 
-    void checkLogin() {
-      if (_emailTextController.text == "username" && _passwordTextController.text == "password")
+    void _checkLogin() {
+      if (_emailTextController.text == "username" && _passwordTextController.text == "password"){
+        setState(() {
+          _emailTextController.text = "";
+          _passwordTextController.text = "";
+        });
+        node.unfocus();
         Navigator.of(context).pushNamed(BottomTabbar.tag);
+      }
       else {
         showDialog(
             context: context,
@@ -61,6 +69,8 @@ class _LoginPage extends State<LoginPage> {
     final emailTextField = TextField(
       controller: _emailTextController,
       keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () => node.nextFocus(),
       decoration: InputDecoration(
         labelText: 'Email',
         labelStyle: TextStyle(
@@ -94,7 +104,11 @@ class _LoginPage extends State<LoginPage> {
 
     final passwordTextField = TextField(
       controller: _passwordTextController,
-      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.done,
+      onSubmitted: (v){
+        _checkLogin();
+      },
+      keyboardType: TextInputType.text,
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Password',
@@ -141,7 +155,7 @@ class _LoginPage extends State<LoginPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      onPressed: checkLogin,
+      onPressed: _checkLogin,
     );
 
     final forgetPasswordButton = OutlineButton(
@@ -186,7 +200,7 @@ class _LoginPage extends State<LoginPage> {
                               child: AspectRatio(
                                 aspectRatio: 1/1,
                                 child: Image.asset(
-                                  "assets/Icons/app_icon.png",
+                                  'assets/Icons/app-icon.png',
                                 ),
                               ),
                             ),

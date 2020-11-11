@@ -99,7 +99,7 @@ class _IntroPage extends State<IntroPage> {
                   child: AspectRatio(
                     aspectRatio: 1/1,
                     child: Image.asset(
-                      "assets/Icons/app_icon.png",
+                      "assets/Icons/app-icon.png",
                     ),
                   ),
                 ),

@@ -35,42 +35,45 @@ class _BottomTabbar extends State<BottomTabbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _children.elementAt(_currentIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: AppColors.themeColor,
-        unselectedItemColor: Colors.black38,
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        onTap: _onTabTapped,
-        currentIndex: _currentIndex, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Home'),
+    return WillPopScope(
+        child: Scaffold(
+          body: Center(
+            child: _children.elementAt(_currentIndex),
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.arrow_circle_down),
-            title: new Text('Download'),
+          bottomNavigationBar: BottomNavigationBar(
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedItemColor: AppColors.themeColor,
+            unselectedItemColor: Colors.black38,
+            backgroundColor: Colors.white,
+            type: BottomNavigationBarType.fixed,
+            onTap: _onTabTapped,
+            currentIndex: _currentIndex, // this will be set when a new tab is tapped
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('Home'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.arrow_circle_down),
+                title: new Text('Download'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.drive_file_move),
+                title: new Text('Browse'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  title: Text('Search')
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text('Profile')
+              )
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.drive_file_move),
-            title: new Text('Browse'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text('Search')
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile')
-          )
-        ],
-      ),
+        ),
+        onWillPop: () async => false,
     );
   }
 }

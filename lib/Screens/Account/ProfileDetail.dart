@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
 
 class ProfileDetailPage extends StatefulWidget {
-  static String tag = '/profiledetail-page';
+  static String tag = '/profile-detail-page';
 
   @override
   _ProfileDetailPage createState() => new _ProfileDetailPage();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 
+import 'package:DARKEN/Screens/Home/CourseDetail.dart';
 import 'package:DARKEN/Screens/Home/HomePage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
@@ -54,7 +56,16 @@ class _DownloadPage extends State<DownloadPage> {
                     child: ListView.builder(
                         itemCount: downloadedList.length,
                         itemBuilder: (context, index) {
-                          return Container(
+                          return GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                        fullscreenDialog: true,
+                                        builder: (context) => CourseDetailPage()
+                                    )
+                                );
+                              },
+                              child: Container(
                               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               height: 100,
                               child: Card(
@@ -90,6 +101,7 @@ class _DownloadPage extends State<DownloadPage> {
                                       ]
                                   )
                               )
+                          )
                           );
                         }
                     ),

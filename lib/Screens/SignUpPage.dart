@@ -306,7 +306,12 @@ class _SignUpPage extends State<SignUpPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('CREATE A NEW ACCOUNT'),
+          title: Text(
+            'CREATE A NEW ACCOUNT',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           backgroundColor: AppColors.themeColor,
         ),
         body: GestureDetector(

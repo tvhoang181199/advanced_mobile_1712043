@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:DARKEN/Screens/Account/ProfileDetail.dart';
+
 import 'package:DARKEN/Styling/AppColors.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -63,7 +65,12 @@ class _ProfilePage extends State<ProfilePage> {
 
     final profileRow = GestureDetector(
         onTap: (){
-          print('Clicked on profile information');
+          Navigator.of(context).push(
+              CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => ProfileDetailPage()
+              )
+          );
         },
         child: Container(
           padding: EdgeInsets.only(left: 20, right: 20),

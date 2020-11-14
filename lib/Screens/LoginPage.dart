@@ -179,7 +179,12 @@ class _LoginPage extends State<LoginPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('LOGIN'),
+          title: Text(
+            'LOGIN',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           backgroundColor: AppColors.themeColor,
         ),
         body: GestureDetector(

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-
 import 'package:DARKEN/Styling/AppColors.dart';
 
 class Course {
   Image image;
   String name;
-  Course(this.image, this.name);
+  String lecturer;
+  int videos;
+  Course(this.image, this.name, this.lecturer, this.videos);
 }
 
 class HomePage extends StatefulWidget {
@@ -20,29 +21,27 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
 
   final trendingList = <Course>[
-    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic'),
-    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic'),
-    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic'),
-    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced'),
-    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic'),
-
+    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', null, 0),
+    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
+    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
+    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
+    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
   ];
 
   final progammingList = <Course>[
-    Course(Image.asset('assets/HomePage/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium'),
-    Course(Image.asset('assets/HomePage/golang-1.png', fit: BoxFit.cover), 'Golang Basic'),
-    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic'),
-    Course(Image.asset('assets/HomePage/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity'),
-    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic'),
-    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic'),
-    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced'),
-
+    Course(Image.asset('assets/HomePage/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', null, 0),
+    Course(Image.asset('assets/HomePage/golang-1.png', fit: BoxFit.cover), 'Golang Basic', null, 0),
+    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
+    Course(Image.asset('assets/HomePage/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', null, 0),
+    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
+    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
+    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
   ];
 
   final bussinessList = <Course>[
-    Course(Image.asset('assets/HomePage/fb-ads-1.png', fit: BoxFit.cover), 'Facebook Ads'),
-    Course(Image.asset('assets/HomePage/google-ads-1.png', fit: BoxFit.cover), 'Google Ads'),
-    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic'),
+    Course(Image.asset('assets/HomePage/fb-ads-1.png', fit: BoxFit.cover), 'Facebook Ads', null, 0),
+    Course(Image.asset('assets/HomePage/google-ads-1.png', fit: BoxFit.cover), 'Google Ads', null, 0),
+    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', null, 0),
   ];
 
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 
+import 'package:DARKEN/Screens/Home/CourseDetail.dart';
 import 'package:DARKEN/Screens/Home/HomePage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
@@ -44,42 +46,52 @@ class _CoursesFiltered extends State<CoursesFiltered> {
           child: ListView.builder(
               itemCount: searchList.length,
               itemBuilder: (context, index) {
-                return Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    height: 100,
-                    child: Card(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              AspectRatio(
-                                aspectRatio: 16/9,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(4),
-                                      bottomLeft: Radius.circular(4)
-                                  ),
-                                  child: searchList[index].image,
-                                ),
-                              ),
-
-                              Expanded(
-                                  child: Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(searchList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
-                                          Text('Teacher: '+ searchList[index].lecturer),
-                                          Text('Total videos: '+ searchList[index].videos.toString()),
-                                          // RatingBox(),
-                                        ],
-                                      )
-                                  )
-                              )
-                            ]
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CourseDetailPage()
                         )
-                    )
+                    );
+                  },
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      height: 100,
+                      child: Card(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                AspectRatio(
+                                  aspectRatio: 16/9,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(4),
+                                        bottomLeft: Radius.circular(4)
+                                    ),
+                                    child: searchList[index].image,
+                                  ),
+                                ),
+
+                                Expanded(
+                                    child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(searchList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
+                                            Text('Teacher: '+ searchList[index].lecturer),
+                                            Text('Total videos: '+ searchList[index].videos.toString()),
+                                            // RatingBox(),
+                                          ],
+                                        )
+                                    )
+                                )
+                              ]
+                          )
+                      )
+                  ),
                 );
               }
           ),

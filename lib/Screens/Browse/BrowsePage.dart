@@ -1,9 +1,10 @@
+import 'package:DARKEN/Models/ListCoursesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:imagebutton/imagebutton.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 
-import 'package:DARKEN/Screens/Home/HomePage.dart';
 import 'package:DARKEN/Screens/Home/CoursesFiltered.dart';
 import 'package:DARKEN/Screens/Home/CourseDetail.dart';
 
@@ -22,16 +23,7 @@ class BrowsePage extends StatefulWidget{
 }
 
 class _BrowsePage extends State<BrowsePage>{
-
-  final suggestionList = <Course>[
-    Course(Image.asset('assets/Courses/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', null, 0),
-    Course(Image.asset('assets/Courses/golang-1.png', fit: BoxFit.cover), 'Golang Basic', null, 0),
-    Course(Image.asset('assets/Courses/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
-    Course(Image.asset('assets/Courses/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', null, 0),
-    Course(Image.asset('assets/Courses/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
-    Course(Image.asset('assets/Courses/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
-    Course(Image.asset('assets/Courses/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
-  ];
+  
   final skillList = ['C++','Swift','Python', 'Flutter', 'ASP.NET Core','Machine Learning','JavaScript'];
   final authorList = <Author>[
     Author('assets/Icons/default-avatar.png', 'PHHAI'),
@@ -64,10 +56,10 @@ class _BrowsePage extends State<BrowsePage>{
                         height: 200,
                         paddingTop: 5,
                         pressedImage: Image.asset(
-                          "assets/HomePage/java-1.png",
+                          "assets/Courses/java-1.png",
                         ),
                         unpressedImage: Image.asset(
-                          "assets/HomePage/python-2.jpg", ),
+                          "assets/Courses/python-2.jpg", ),
                         onTap: () {
                           Navigator.of(context).push(
                               CupertinoPageRoute(
@@ -94,10 +86,10 @@ class _BrowsePage extends State<BrowsePage>{
                         height: 200,
                         paddingTop: 5,
                         pressedImage: Image.asset(
-                          "assets/HomePage/digital-marketing-1.jpg",
+                          "assets/Courses/digital-marketing-1.jpg",
                         ),
                         unpressedImage: Image.asset(
-                          "assets/HomePage/python-1.jpg",),
+                          "assets/Courses/python-1.jpg",),
                         onTap: () {
                           Navigator.of(context).push(
                               CupertinoPageRoute(
@@ -122,64 +114,68 @@ class _BrowsePage extends State<BrowsePage>{
               else if (index == 3) {
                 return  Container (
                   padding: EdgeInsets.only(bottom: 10),
-                  child: CarouselSlider(
-                      options: CarouselOptions(
-                        aspectRatio: 2,
-                        enlargeCenterPage: true,
-                        scrollDirection: Axis.horizontal,
-                      ),
-                      items: suggestionList.map((item) =>
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.of(context).push(
-                                  CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) => CourseDetailPage()
-                                  )
-                              );
-                            },
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                    alignment: Alignment.bottomCenter,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      child: item.image,
-                                    )
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color.fromRGBO(255, 255, 255, 0),
-                                            Color.fromRGBO(0, 0, 0, 0.7),
-                                          ],
-                                          begin: Alignment.center,
-                                          end: Alignment.bottomCenter,
+                  child: Consumer<ListCoursesModel>(
+                    builder: (context, listCourses, _) {
+                      return CarouselSlider(
+                          options: CarouselOptions(
+                            aspectRatio: 2,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                          items: listCourses.listCourses.sublist(1,7).map((item) =>
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                          fullscreenDialog: true,
+                                          builder: (context) => CourseDetailPage()
+                                      )
+                                  );
+                                },
+                                child: Stack(
+                                  children: <Widget>[
+                                    Container(
+                                        alignment: Alignment.bottomCenter,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                                          child: Image.asset(item.imageUrl, fit: BoxFit.cover),
+                                        )
+                                    ),
+                                    Container(
+                                        alignment: Alignment.center,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromRGBO(255, 255, 255, 0),
+                                                  Color.fromRGBO(0, 0, 0, 0.7),
+                                                ],
+                                                begin: Alignment.center,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text(
+                                        item.title,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
-                                  )
+                                    )
+                                  ],
                                 ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    item.name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )).toList()
+                              )).toList()
+                      );
+                    }
                   ),
                 );
               }

@@ -29,15 +29,16 @@ class CourseModel {
     this.updatedAt,
     this.instructorId,
     this.typeUploadVideoLesson,
-});
+  });
 
   CourseModel.short(
-    this.id,
-    this.title,
-    this.subtitle,
-    this.videoNumber,
-    this.imageUrl,
-  );
+      this.id,
+      this.title,
+      this.subtitle,
+      this.videoNumber,
+      this.imageUrl,
+      this.teacher,
+      );
 
   String id;
   String title;
@@ -62,6 +63,7 @@ class CourseModel {
   DateTime updatedAt;
   String instructorId;
   int typeUploadVideoLesson;
+  String teacher;
 
   factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
     id: json["id"],

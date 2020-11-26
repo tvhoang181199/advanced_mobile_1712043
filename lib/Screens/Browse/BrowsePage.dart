@@ -24,13 +24,13 @@ class BrowsePage extends StatefulWidget{
 class _BrowsePage extends State<BrowsePage>{
 
   final suggestionList = <Course>[
-    Course(Image.asset('assets/HomePage/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', null, 0),
-    Course(Image.asset('assets/HomePage/golang-1.png', fit: BoxFit.cover), 'Golang Basic', null, 0),
-    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
-    Course(Image.asset('assets/HomePage/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', null, 0),
-    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
+    Course(Image.asset('assets/Courses/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', null, 0),
+    Course(Image.asset('assets/Courses/golang-1.png', fit: BoxFit.cover), 'Golang Basic', null, 0),
+    Course(Image.asset('assets/Courses/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
+    Course(Image.asset('assets/Courses/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', null, 0),
+    Course(Image.asset('assets/Courses/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
+    Course(Image.asset('assets/Courses/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
+    Course(Image.asset('assets/Courses/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
   ];
   final skillList = ['C++','Swift','Python', 'Flutter', 'ASP.NET Core','Machine Learning','JavaScript'];
   final authorList = <Author>[

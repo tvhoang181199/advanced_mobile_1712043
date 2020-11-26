@@ -1,6 +1,8 @@
+import 'package:DARKEN/Models/ListCoursesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 
 import 'package:DARKEN/Screens/Home/CourseDetail.dart';
 
@@ -23,30 +25,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
 
-  final trendingList = <Course>[
-    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', null, 0),
-    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
-    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
-  ];
-
-  final progammingList = <Course>[
-    Course(Image.asset('assets/HomePage/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', null, 0),
-    Course(Image.asset('assets/HomePage/golang-1.png', fit: BoxFit.cover), 'Golang Basic', null, 0),
-    Course(Image.asset('assets/HomePage/java-1.png', fit: BoxFit.cover), 'Java Basic', null, 0),
-    Course(Image.asset('assets/HomePage/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', null, 0),
-    Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', null, 0),
-    Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', null, 0),
-  ];
-
-  final bussinessList = <Course>[
-    Course(Image.asset('assets/HomePage/fb-ads-1.png', fit: BoxFit.cover), 'Facebook Ads', null, 0),
-    Course(Image.asset('assets/HomePage/google-ads-1.png', fit: BoxFit.cover), 'Google Ads', null, 0),
-    Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', null, 0),
-  ];
-
   @override
   Widget build(BuildContext context) {
 
@@ -65,79 +43,83 @@ class _HomePage extends State<HomePage> {
                     ),
                   ),
                 ),
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200,
-                    viewportFraction: 1,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    onPageChanged: null,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                  items: trendingList.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 20.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: AppColors.greyColor,
-                                  width: 1,
-                                )
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  Container(
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(5),
-                                        )
-                                    ),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(5),
+                Consumer<ListCoursesModel>(
+                  builder: (context, listCourses, _) {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200,
+                        viewportFraction: 1,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 5),
+                        autoPlayAnimationDuration: Duration(milliseconds: 1000),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        onPageChanged: null,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: listCourses.listCourses.sublist(0, 5).map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: AppColors.greyColor,
+                                      width: 1,
+                                    )
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(5),
+                                              topRight: Radius.circular(5),
+                                            )
                                         ),
-                                        child: i.image
-                                    ),
-                                  ),
-                                  Container(
-                                      height: 48,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            i.name,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
+                                        child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(5),
+                                              topRight: Radius.circular(5),
                                             ),
-                                          ),
-                                        ],
+                                            child: Image.asset(i.imageUrl, fit: BoxFit.cover,)
+                                        ),
+                                      ),
+                                      Container(
+                                          height: 48,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                i.title,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                       )
-                                  )
-                                ],
-                              ),
-                            )
+                                    ],
+                                  ),
+                                )
+                            );
+                          },
                         );
-                      },
+                      }).toList(),
                     );
-                  }).toList(),
+                  }
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -150,87 +132,91 @@ class _HomePage extends State<HomePage> {
                     ),
                   ),
                 ),
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 160,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: false,
-                    reverse: false,
-                    autoPlay: false,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: false,
-                    onPageChanged: null,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                  items: progammingList.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                            onTap: (){
-                              Navigator.of(context).push(
-                                  CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) => CourseDetailPage()
-                                  )
-                              );
-                            },
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.only(left: 0, right: 20),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: AppColors.greyColor,
-                                      width: 1,
-                                    )
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            )
-                                        ),
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            ),
-                                            child: i.image
-                                        ),
-                                      ),
-                                      Container(
-                                          height: 38,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                i.name,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          )
+                Consumer<ListCoursesModel>(
+                  builder: (context, listCourses, _) {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        height: 160,
+                        viewportFraction: 0.8,
+                        initialPage: 0,
+                        enableInfiniteScroll: false,
+                        reverse: false,
+                        autoPlay: false,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: false,
+                        onPageChanged: null,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: listCourses.listCourses.sublist(4, 9).map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                          fullscreenDialog: true,
+                                          builder: (context) => CourseDetailPage()
                                       )
-                                    ],
-                                  ),
+                                  );
+                                },
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.only(left: 0, right: 20),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: AppColors.greyColor,
+                                          width: 1,
+                                        )
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          Container(
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                )
+                                            ),
+                                            child: ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                ),
+                                                child: Image.asset(i.imageUrl, fit: BoxFit.cover)
+                                            ),
+                                          ),
+                                          Container(
+                                              height: 38,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    i.title,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                          )
+                                        ],
+                                      ),
+                                    )
                                 )
-                            )
+                            );
+                          },
                         );
-                      },
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -243,97 +229,95 @@ class _HomePage extends State<HomePage> {
                     ),
                   ),
                 ),
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 160,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: false,
-                    reverse: false,
-                    autoPlay: false,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: false,
-                    onPageChanged: null,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                  items: bussinessList.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                            onTap: (){
-                              Navigator.of(context).push(
-                                  CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) => CourseDetailPage()
-                                  )
-                              );
-                            },
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.only(left: 0, right: 20),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: AppColors.greyColor,
-                                      width: 1,
-                                    )
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            )
-                                        ),
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            ),
-                                            child: i.image
-                                        ),
-                                      ),
-                                      Container(
-                                          height: 38,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                i.name,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          )
+                Consumer<ListCoursesModel>(
+                  builder: (context, listCourses, _) {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        height: 160,
+                        viewportFraction: 0.8,
+                        initialPage: 0,
+                        enableInfiniteScroll: false,
+                        reverse: false,
+                        autoPlay: false,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: false,
+                        onPageChanged: null,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: listCourses.listCourses.sublist(9,12).map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                          fullscreenDialog: true,
+                                          builder: (context) => CourseDetailPage()
                                       )
-                                    ],
-                                  ),
+                                  );
+                                },
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.only(left: 0, right: 20),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: AppColors.greyColor,
+                                          width: 1,
+                                        )
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          Container(
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                )
+                                            ),
+                                            child: ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                ),
+                                                child: Image.asset(i.imageUrl, fit: BoxFit.cover,)
+                                            ),
+                                          ),
+                                          Container(
+                                              height: 38,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    i.title,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                          )
+                                        ],
+                                      ),
+                                    )
                                 )
-                            )
+                            );
+                          },
                         );
-                      },
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
-                // ListView.builder(
-                //     itemBuilder: (context, index) {
-                //       return;
-                //     }
-                // )
               ],
             )
         )
-
     );
   }
 }

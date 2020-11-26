@@ -7,6 +7,9 @@ import 'package:DARKEN/Screens/Search/SearchPage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
 
+import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:provider/provider.dart';
+
 
 class BottomTabbar extends StatefulWidget {
   BottomTabbar({Key key}) : super(key: key);
@@ -35,7 +38,11 @@ class _BottomTabbar extends State<BottomTabbar> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ListCoursesModel()),
+      ],
+      child: WillPopScope(
         child: Scaffold(
           body: Center(
             child: _children.elementAt(_currentIndex),
@@ -74,6 +81,7 @@ class _BottomTabbar extends State<BottomTabbar> {
           ),
         ),
         onWillPop: () async => false,
+      ),
     );
   }
 }

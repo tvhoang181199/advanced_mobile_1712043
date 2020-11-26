@@ -18,13 +18,13 @@ class _CourseDetailPage extends State<CourseDetailPage> {
   Widget build(BuildContext context) {
 
     final videoList = <Course>[
-      Course(Image.asset('assets/HomePage/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', 'phhai', 12),
-      Course(Image.asset('assets/HomePage/google-ads-1.png', fit: BoxFit.cover), 'Google Ads', 'phhai', 3),
-      Course(Image.asset('assets/HomePage/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', 'phhai', 2),
-      Course(Image.asset('assets/HomePage/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', 'phhai', 10),
-      Course(Image.asset('assets/HomePage/swift-1.png', fit: BoxFit.cover), 'Swift Basic', 'phhai', 10),
-      Course(Image.asset('assets/HomePage/python-1.jpg', fit: BoxFit.cover), 'Python Basic', 'phhai', 15),
-      Course(Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', 'phhai', 15),
+      Course(Image.asset('assets/Courses/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', 'phhai', 12),
+      Course(Image.asset('assets/Courses/google-ads-1.png', fit: BoxFit.cover), 'Google Ads', 'phhai', 3),
+      Course(Image.asset('assets/Courses/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', 'phhai', 2),
+      Course(Image.asset('assets/Courses/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', 'phhai', 10),
+      Course(Image.asset('assets/Courses/swift-1.png', fit: BoxFit.cover), 'Swift Basic', 'phhai', 10),
+      Course(Image.asset('assets/Courses/python-1.jpg', fit: BoxFit.cover), 'Python Basic', 'phhai', 15),
+      Course(Image.asset('assets/Courses/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', 'phhai', 15),
     ];
 
     return Scaffold(
@@ -92,16 +92,22 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                                            child: videoList[index].image,
                                          ),
                                        ),
+                                       Container(
+                                         padding: EdgeInsets.all(10),
+                                         alignment: Alignment.centerLeft,
+                                         child: Text(
+                                           'Video ${index}',
+                                           style: TextStyle(
+                                               fontWeight: FontWeight.bold,
+                                               fontSize: 15
+                                           ),
+                                         ),
+                                       ),
                                        Expanded(
                                            child: Container(
-                                             padding: EdgeInsets.all(10),
-                                             alignment: Alignment.centerLeft,
-                                             child: Text(
-                                                 'Video ${index}',
-                                               style: TextStyle(
-                                                 fontWeight: FontWeight.bold,
-                                                 fontSize: 15
-                                               ),
+                                             alignment: Alignment.centerRight,
+                                             child: IconButton(
+                                               icon: Icon(Icons.arrow_circle_down),
                                              ),
                                            )
                                        )

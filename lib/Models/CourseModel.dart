@@ -34,7 +34,7 @@ class CourseModel {
   CourseModel.short(
       this.id,
       this.title,
-      this.subtitle,
+      this.description,
       this.videoNumber,
       this.imageUrl,
       this.teacher,

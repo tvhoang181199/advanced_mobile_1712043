@@ -29,7 +29,6 @@ class _DownloadPage extends State<DownloadPage> {
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -55,13 +54,16 @@ class _DownloadPage extends State<DownloadPage> {
                   child: Container(
                     child: ListView.builder(
                         itemCount: downloadedList.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (context, i) {
                           return GestureDetector(
                               onTap: (){
                                 Navigator.of(context).push(
                                     CupertinoPageRoute(
                                         fullscreenDialog: true,
-                                        builder: (context) => CourseDetailPage()
+                                        builder: (context) => CourseDetailPage(),
+                                      settings: RouteSettings(
+                                        arguments: i,
+                                      ),
                                     )
                                 );
                               },
@@ -79,7 +81,7 @@ class _DownloadPage extends State<DownloadPage> {
                                               topLeft: Radius.circular(4),
                                               bottomLeft: Radius.circular(4)
                                             ),
-                                            child: downloadedList[index].image,
+                                            child: downloadedList[i].image,
                                           ),
                                         ),
 
@@ -90,9 +92,9 @@ class _DownloadPage extends State<DownloadPage> {
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text(downloadedList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                    Text('Teacher: '+ downloadedList[index].lecturer),
-                                                    Text('Total videos: '+ downloadedList[index].videos.toString()),
+                                                    Text(downloadedList[i].name, style: TextStyle(fontWeight: FontWeight.bold)),
+                                                    Text('Teacher: '+ downloadedList[i].lecturer),
+                                                    Text('Total videos: '+ downloadedList[i].videos.toString()),
                                                     // RatingBox(),
                                                   ],
                                                 )

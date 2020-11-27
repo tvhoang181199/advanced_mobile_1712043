@@ -89,7 +89,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text('50')
+                          Text('46')
                         ],
                       ),
                     ),
@@ -108,7 +108,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text('14')
+                          Text('25')
                         ],
                       ),
                       decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text('50')
+                          Text('3')
                         ],
                       ),
                     )

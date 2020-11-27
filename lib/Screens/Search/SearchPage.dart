@@ -31,7 +31,7 @@ class _SearchPage extends State<SearchPage> {
       }
 
       _listCourses.forEach((course) {
-        if (course.title.toLowerCase().contains(text.toLowerCase()) || course.title.toLowerCase().contains(text.toLowerCase()))
+        if (course.title.toLowerCase().contains(text.toLowerCase()))
           _searchList.add(course);
       });
 
@@ -55,6 +55,7 @@ class _SearchPage extends State<SearchPage> {
                       textInputAction: TextInputAction.done,
                       onChanged: onSearchTextChanged,
                       decoration: InputDecoration(
+                        hintText: 'Search',
                         suffixIcon: IconButton(
                             onPressed: (){
                               textController.clear();
@@ -111,11 +112,11 @@ class _SearchPage extends State<SearchPage> {
                                               AspectRatio(
                                                 aspectRatio: 16/9,
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(4),
-                                                      bottomLeft: Radius.circular(4)
-                                                  ),
-                                                  child: Image.asset(_searchList[index].imageUrl, fit: BoxFit.cover,)
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(4),
+                                                        bottomLeft: Radius.circular(4)
+                                                    ),
+                                                    child: Image.asset(_searchList[index].imageUrl, fit: BoxFit.cover,)
                                                 ),
                                               ),
 
@@ -140,8 +141,8 @@ class _SearchPage extends State<SearchPage> {
                                 )
                             );
                           }
-                      ): new ListView.builder(
-                          itemCount: _listCourses.length,
+                      ): ListView.builder(
+                          itemCount: 6,
                           itemBuilder: (context, index) {
                             return GestureDetector(
                                 onTap: (){
@@ -152,7 +153,17 @@ class _SearchPage extends State<SearchPage> {
                                       )
                                   );
                                 },
-                                child: Container(
+                                child: (index == 0) ? Container(
+                                  padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
+                                  child: Text(
+                                    'Suggestion',
+                                    style: TextStyle(
+                                        color: AppColors.themeColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ) : Container(
                                     padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                     height: 100,
                                     child: Card(

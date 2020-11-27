@@ -1,8 +1,7 @@
+import 'package:DARKEN/Models/CourseModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'package:DARKEN/Screens/Home/HomePage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
 
@@ -16,22 +15,13 @@ class CourseDetailPage extends StatefulWidget {
 class _CourseDetailPage extends State<CourseDetailPage> {
   @override
   Widget build(BuildContext context) {
-
-    final videoList = <Course>[
-      Course(Image.asset('assets/Courses/appium-1.png', fit: BoxFit.cover), 'Mobile Testing with Appium', 'phhai', 12),
-      Course(Image.asset('assets/Courses/google-ads-1.png', fit: BoxFit.cover), 'Google Ads', 'phhai', 3),
-      Course(Image.asset('assets/Courses/digital-marketing-1.jpg', fit: BoxFit.cover), 'Digital Marketing Basic', 'phhai', 2),
-      Course(Image.asset('assets/Courses/unity-1.jpg', fit: BoxFit.cover), 'Game development with Unity', 'phhai', 10),
-      Course(Image.asset('assets/Courses/swift-1.png', fit: BoxFit.cover), 'Swift Basic', 'phhai', 10),
-      Course(Image.asset('assets/Courses/python-1.jpg', fit: BoxFit.cover), 'Python Basic', 'phhai', 15),
-      Course(Image.asset('assets/Courses/python-2.jpg', fit: BoxFit.cover), 'Python Advanced', 'phhai', 15),
-    ];
+    final CourseModel _course = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'COURSE DETAIL',
+          '${_course.title.toUpperCase()}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -49,14 +39,12 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
-                  child: Image.asset('assets/HomePage/python-2.jpg', fit: BoxFit.cover),
+                  child: Image.asset(_course.imageUrl, fit: BoxFit.cover),
                 ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. '
-                    'Aenean commodo ligula eget dolor. Aenean massa. '
-                    'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. '),
+                child: Text(_course.description),
               ),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -70,10 +58,10 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                   )
               ),
               Container(
-                height: videoList.length*100.0,
+                height: _course.videoNumber*100.0,
                child: ListView.builder(
                    physics: const NeverScrollableScrollPhysics(),
-                   itemCount: videoList.length,
+                   itemCount: _course.videoNumber,
                    itemBuilder: (context, index) {
                      return Container(
                              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -89,7 +77,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                                                topLeft: Radius.circular(4),
                                                bottomLeft: Radius.circular(4)
                                            ),
-                                           child: videoList[index].image,
+                                           child: Image.asset(_course.imageUrl),
                                          ),
                                        ),
                                        Container(

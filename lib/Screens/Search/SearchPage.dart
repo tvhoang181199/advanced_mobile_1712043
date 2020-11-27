@@ -97,8 +97,11 @@ class _SearchPage extends State<SearchPage> {
                                 onTap: (){
                                   Navigator.of(context).push(
                                       CupertinoPageRoute(
-                                          fullscreenDialog: true,
-                                          builder: (context) => CourseDetailPage()
+                                        fullscreenDialog: true,
+                                        builder: (context) => CourseDetailPage(),
+                                        settings: RouteSettings(
+                                          arguments: _listCourses[index],
+                                        ),
                                       )
                                   );
                                 },
@@ -149,7 +152,10 @@ class _SearchPage extends State<SearchPage> {
                                   Navigator.of(context).push(
                                       CupertinoPageRoute(
                                           fullscreenDialog: true,
-                                          builder: (context) => CourseDetailPage()
+                                        builder: (context) => CourseDetailPage(),
+                                        settings: RouteSettings(
+                                          arguments: _listCourses[index],
+                                        ),
                                       )
                                   );
                                 },

@@ -4,7 +4,6 @@ import 'package:DARKEN/Screens/Download/DownloadPage.dart';
 import 'package:DARKEN/Screens/Browse/BrowsePage.dart';
 import 'package:DARKEN/Screens/Account/ProfilePage.dart';
 import 'package:DARKEN/Screens/Search/SearchPage.dart';
-
 import 'package:DARKEN/Styling/AppColors.dart';
 
 import 'package:DARKEN/Models/ListCoursesModel.dart';

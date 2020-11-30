@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:DARKEN/Screens/Account/ProfileDetail.dart';
+import 'package:DARKEN/Screens/Account/ProfileDetailPage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
 

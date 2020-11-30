@@ -38,6 +38,8 @@ class CourseModel {
       this.videoNumber,
       this.imageUrl,
       this.teacher,
+      this.downloadedVideos,
+      this.downloadedVideosList,
       );
 
   String id;
@@ -64,6 +66,8 @@ class CourseModel {
   String instructorId;
   int typeUploadVideoLesson;
   String teacher;
+  int downloadedVideos;
+  List<bool> downloadedVideosList;
 
   factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
     id: json["id"],

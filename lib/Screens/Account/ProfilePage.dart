@@ -1,3 +1,4 @@
+import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -250,6 +251,7 @@ class _ProfilePage extends State<ProfilePage> {
 
     final logoutRow = GestureDetector(
         onTap: (){
+          APIServer().saveToken('');
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
         child: Container(

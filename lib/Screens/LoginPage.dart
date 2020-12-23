@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:DARKEN/BottomTabbar.dart';
-
 import 'package:DARKEN/Styling/AppColors.dart';
+import 'package:DARKEN/APIs/APIServer.dart';
 
-
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = '/login-page';
@@ -14,60 +15,174 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  TextEditingController _emailTextController = new TextEditingController();
-  TextEditingController _passwordTextController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
 
-    Widget okButton = FlatButton(
-      child: Text(
-          "OK",
-          style: TextStyle(
-            color: AppColors.themeColor,
-          ),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
+    void _checkLogin() async {
+      var email = _emailController.text;
+      var password = _passwordController.text;
 
-    AlertDialog alert = AlertDialog(
-      title: Text(
-          "FAILED!",
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 20,
-            fontWeight: FontWeight.bold
-          ),
-      ),
-      content: Text("The username or password you entered is incorrect!\nHint:\nemail: username\npassword: password"),
-      actions: [
-        okButton,
-      ],
-    );
+      setState(() {
+        _isLoading = true;
+      });
 
-    void _checkLogin() {
-      if (_emailTextController.text == "username" && _passwordTextController.text == "password"){
-        setState(() {
-          _emailTextController.text = "";
-          _passwordTextController.text = "";
-        });
+      http.Response response = await APIServer().login(email, password);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (response.statusCode == 200) {
         node.unfocus();
         Navigator.of(context).pushNamed(BottomTabbar.tag);
       }
       else {
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return alert;
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "LOGIN FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 18.0
+                  )
+              ),
+              content: Text(
+                  "Username or password is invalid!"
+              ),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text("Try again", style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 16.0)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+
+    void _resetPassword() async {
+      if (_emailController.text == "") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.themeColor,
+                      fontSize: 18.0
+                  )
+              ),
+              content: Text(
+                  "Please enter your email in first textfield!"
+              ),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text("OK", style: TextStyle(
+                      color: AppColors.themeColor,
+                      fontSize: 16.0)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else {
+        var email = _emailController.text;
+
+        setState(() {
+          _isLoading = true;
         });
+
+        http.Response response = await APIServer().forgetPassword(email);
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (response.statusCode == 200){
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                      "RESET PASSWORD",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                      color: AppColors.themeColor, fontSize: 18.0
+                      )
+                  ),
+                  content: Text(
+                    "Please check your email!",
+                    style: TextStyle(
+                        color: AppColors.darkGreyColor
+                    ),
+                  ),
+                  actions: <Widget>[
+                    // usually buttons at the bottom of the dialog
+                    FlatButton(
+                      child: Text("OK", style: TextStyle(
+                          color: AppColors.themeColor, fontSize: 16.0)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              }
+          );
+        }
+        else {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: new Text("Failed",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: AppColors.errorColor, fontSize: 18.0)),
+                  content: new Text("Email does not exist"),
+                  actions: <Widget>[
+                    // usually buttons at the bottom of the dialog
+                    new FlatButton(
+                      child: new Text("Try Again", style: TextStyle(
+                          color: AppColors.errorColor, fontSize: 16.0)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              }
+          );
+        }
       }
     }
 
     final emailTextField = TextField(
-      controller: _emailTextController,
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => node.nextFocus(),
@@ -103,7 +218,7 @@ class _LoginPage extends State<LoginPage> {
     );
 
     final passwordTextField = TextField(
-      controller: _passwordTextController,
+      controller: _passwordController,
       textInputAction: TextInputAction.done,
       onSubmitted: (v){
         _checkLogin();
@@ -170,11 +285,20 @@ class _LoginPage extends State<LoginPage> {
           decoration: TextDecoration.underline,
         ),
       ),
-
-      onPressed: (){
-
-      },
+      onPressed: _resetPassword,
     );
+
+    Widget loadingIndicator = _isLoading ? new Container(
+      color: Colors.grey[300],
+      width: 70.0,
+      height: 70.0,
+      child: new Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: new Center(
+              child: new CircularProgressIndicator()
+          )
+      ),
+    ) : new Container();
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -191,35 +315,43 @@ class _LoginPage extends State<LoginPage> {
             onTap:() {
               FocusScope.of(context).requestFocus(new FocusNode());
             },
-            child: Center(
-                child: Container (
-                    alignment: Alignment.topCenter,
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: SingleChildScrollView(
-                      reverse: true,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(left: 100.0, top: 50.0, right: 100.0, bottom: 50.0),
-                              child: AspectRatio(
-                                aspectRatio: 1/1,
-                                child: Image.asset(
-                                  'assets/Icons/app-icon.png',
+            child: Stack(
+              children: <Widget>[
+                Center(
+                    child: Container (
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: SingleChildScrollView(
+                          reverse: true,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(left: 100.0, top: 50.0, right: 100.0, bottom: 50.0),
+                                  child: AspectRatio(
+                                    aspectRatio: 1/1,
+                                    child: Image.asset(
+                                      'assets/Icons/app-icon.png',
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            emailTextField,
-                            SizedBox(height: 10.0),
-                            passwordTextField,
-                            SizedBox(height: 20.0),
-                            loginButton,
-                            forgetPasswordButton,
-                          ]
-                      ),
+                                SizedBox(height: 10.0),
+                                emailTextField,
+                                SizedBox(height: 10.0),
+                                passwordTextField,
+                                SizedBox(height: 20.0),
+                                loginButton,
+                                forgetPasswordButton,
+                              ]
+                          ),
+                        )
                     )
+                ),
+                Align(
+                    child: loadingIndicator,
+                    alignment: FractionalOffset.center
                 )
+              ],
             )
         )
     );

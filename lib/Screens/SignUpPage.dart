@@ -1,8 +1,12 @@
+import 'package:DARKEN/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:DARKEN/BottomTabbar.dart';
 
+import 'package:DARKEN/BottomTabbar.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
+import 'package:DARKEN/APIs/APIServer.dart';
+
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatefulWidget {
   static String tag = '/signup-page';
@@ -42,17 +46,150 @@ class _SignUpPage extends State<SignUpPage> {
       }
     }
 
-    void _signUpTapped() {
-      setState(() {
-        _firstNameController.text = "";
-        _lastNameController.text = "";
-        _birthdayController.text = "";
-        _phoneController.text = "";
-        _emailController.text = "";
-        _passwordController.text = "";
-        _confirmPasswordController.text = "";
-      });
-      Navigator.of(context).pushNamed(BottomTabbar.tag);
+    void _signUpTapped() async {
+      var username = _emailController.text;
+      var email = _emailController.text;
+      var password = _passwordController.text;
+      var phone = _phoneController.text;
+
+      if (_firstNameController.text == "" ||
+      _lastNameController.text == "" ||
+      _birthdayController.text == "" ||
+      _phoneController.text == "" ||
+      _emailController.text == "" ||
+      _passwordController.text == "" ||
+      _confirmPasswordController == "") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 18.0)
+              ),
+              content: Text("Please fill all information!"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text(
+                      "Try again",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16.0)
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else if (_passwordController.text != _confirmPasswordController.text) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 18.0)
+              ),
+              content: Text("Your confirm password doesn't match!"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text(
+                      "Try again",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16.0)
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else {
+        http.Response response = await APIServer().register(username, email, phone, password);
+
+        if (response.statusCode == 200){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text("SUCCESS",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.themeColor,
+                        fontSize: 18.0)
+                ),
+                content: Text(
+                  "Your account has been created!\n Check your email for confirmation!",
+                  style: TextStyle(
+                    color: AppColors.darkGreyColor
+                  ),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text("OK", style: TextStyle(
+                        color: AppColors.themeColor, fontSize: 16.0)),
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, LoginPage.tag);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text(
+                    "FAILED",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.errorColor,
+                        fontSize: 18.0)
+                ),
+                content: Text("Email or Phone number has been used!"),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text(
+                        "Try again",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16.0)
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
     }
 
     final firstNameTextField = TextField(

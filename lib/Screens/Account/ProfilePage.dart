@@ -251,7 +251,7 @@ class _ProfilePage extends State<ProfilePage> {
 
     final logoutRow = GestureDetector(
         onTap: (){
-          APIServer().saveToken('');
+          APIServer().updateToken('');
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
         child: Container(

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
 import 'package:DARKEN/BottomTabbar.dart';
 import 'package:DARKEN/Models/InstructorModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,12 +20,12 @@ class APIServer{
     if (response.statusCode == 200){
       final prefs = await SharedPreferences.getInstance();
       print('data : ${jsData["token"]}');
-      saveToken(jsData["token"]);
+      updateToken(jsData["token"]);
     }
     return response;
   }
 
-  saveToken(String token) async {
+  updateToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'token';
     final value = token;

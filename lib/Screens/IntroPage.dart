@@ -18,7 +18,7 @@ class _IntroPage extends State<IntroPage> {
   _checkToken() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'token';
-    final value = prefs.get(key) ?? '';
+    final value = prefs.get(key);
     if (value != '') {
       Navigator.of(context).push(
           new MaterialPageRoute(

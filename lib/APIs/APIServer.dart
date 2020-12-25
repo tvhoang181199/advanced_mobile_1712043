@@ -60,8 +60,8 @@ class APIServer{
     );
     if (response.statusCode == 200){
       final responseJson = jsonDecode(response.body);
-      print(response.body + " ---- ");
-      UserMeModel  userMe = new UserMeModel.fromJson(responseJson);
+      print(response.body);
+      UserMeModel userMe = new UserMeModel.fromJson(responseJson);
       return userMe;
     }
     else {
@@ -70,8 +70,8 @@ class APIServer{
     }
   }
 
- Future getNewCourse(int limit, int page) async {
-   var response = await http.post(api_server + "/course/top_new",body: {'limit':limit,'page':page});
+ Future getTopNewCourses(int limit, int page) async {
+   var response = await http.post(api_server + "/course/top_new", body: {'limit':limit,'page':page});
    return response;
  }
   

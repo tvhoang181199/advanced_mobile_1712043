@@ -23,6 +23,8 @@ class _SignUpPage extends State<SignUpPage> {
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _confirmPasswordController = new TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -123,7 +125,15 @@ class _SignUpPage extends State<SignUpPage> {
         );
       }
       else {
+        setState(() {
+          _isLoading = true;
+        });
+
         http.Response response = await APIServer().register(username, email, phone, password);
+
+        setState(() {
+          _isLoading = false;
+        });
 
         if (response.statusCode == 200){
           showDialog(
@@ -439,6 +449,30 @@ class _SignUpPage extends State<SignUpPage> {
       ),
       onPressed: _signUpTapped,
     );
+
+    Widget loadingIndicator = _isLoading ? new Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Color.fromRGBO(0, 0, 0, 0.2),
+        ),
+        Align(
+          child: Container(
+            color: Colors.grey[700],
+            width: 70.0,
+            height: 70.0,
+            child: new Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: new Center(
+                    child: new CircularProgressIndicator()
+                )
+            ),
+          ),
+          alignment: FractionalOffset.center,
+        )
+      ],
+    ) : new Container();
 
     return Scaffold(
         backgroundColor: Colors.white,

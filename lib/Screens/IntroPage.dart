@@ -29,6 +29,7 @@ class _IntroPage extends State<IntroPage> {
   }
 
   @override initState(){
+    super.initState();
     _checkToken();
   }
 

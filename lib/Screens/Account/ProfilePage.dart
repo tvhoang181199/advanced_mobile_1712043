@@ -1,7 +1,9 @@
 import 'package:DARKEN/APIs/APIServer.dart';
+import 'package:DARKEN/Models/UserMeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:DARKEN/Screens/Account/ProfileDetailPage.dart';
 
@@ -15,9 +17,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
+
+  UserMeModel currentUser;
+  bool _isLoading = false;
+
+  void _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    currentUser = await APIServer().fetchUserInfo();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override void initState() {
+    super.initState();
+    _fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final headerBox = Container(
       height: 120,
       padding: EdgeInsets.all(20),
@@ -53,7 +73,7 @@ class _ProfilePage extends State<ProfilePage> {
           Container(
             padding: EdgeInsets.all(20),
             child: Text(
-              'Trinh Vu Hoang',
+              (currentUser != null) ? currentUser.payload.email : 'null',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -295,22 +315,54 @@ class _ProfilePage extends State<ProfilePage> {
         )
     );
 
+    Widget loadingIndicator = _isLoading ? new Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Color.fromRGBO(0, 0, 0, 0.2),
+        ),
+        Align(
+          child: Container(
+            color: Colors.grey[700],
+            width: 70.0,
+            height: 70.0,
+            child: new Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: new Center(
+                    child: new CircularProgressIndicator()
+                )
+            ),
+          ),
+          alignment: FractionalOffset.center,
+        )
+      ],
+    ) : new Container();
+
     return Scaffold(
       body: SafeArea(
-          child: Container(
-            color: AppColors.greyColor,
-            height: double.infinity,
-            width: double.infinity,
-            child: ListView(
-              children: <Widget>[
-                headerBox,
-                profileRow,
-                analyticsRow,
-                settingsRow,
-                supportRow,
-                logoutRow,
-              ],
-            ),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                color: AppColors.greyColor,
+                height: double.infinity,
+                width: double.infinity,
+                child: ListView(
+                  children: <Widget>[
+                    headerBox,
+                    profileRow,
+                    analyticsRow,
+                    settingsRow,
+                    supportRow,
+                    logoutRow,
+                  ],
+                ),
+              ),
+              Align(
+                  child: loadingIndicator,
+                  alignment: FractionalOffset.center
+              )
+            ],
           )
       ),
     );

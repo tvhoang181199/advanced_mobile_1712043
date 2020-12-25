@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/BottomTabbar.dart';
+import 'package:DARKEN/Models/UserMeModel.dart';
 import 'package:DARKEN/Screens/SignUpPage.dart';
 import 'package:flutter/material.dart';
 
@@ -15,17 +16,23 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPage extends State<IntroPage> {
+  bool _isLoading = false;
+
   _checkToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'token';
-    final value = prefs.get(key);
-    if (value != '') {
+    setState(() {
+      _isLoading = true;
+    });
+    UserMeModel currentUser = await APIServer().fetchUserInfo();
+    if (currentUser != null) {
       Navigator.of(context).push(
           new MaterialPageRoute(
             builder: (BuildContext context) => new BottomTabbar(),
           )
       );
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override initState(){
@@ -94,9 +101,21 @@ class _IntroPage extends State<IntroPage> {
         )
     );
 
+    Widget loadingIndicator = _isLoading ? new Container(
+      color: Colors.grey[300],
+      width: 70.0,
+      height: 70.0,
+      child: new Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: new Center(
+              child: new CircularProgressIndicator()
+          )
+      ),
+    ) : new Container();
+
     return Container(
       color: Colors.white,
-      child: Stack(
+      child: _isLoading ? loadingIndicator : Stack(
         children: <Widget>[
           Align(
             alignment: Alignment.center,

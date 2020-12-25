@@ -65,8 +65,7 @@ class APIServer{
       return userMe;
     }
     else {
-      UserMeModel userMe = new UserMeModel();
-      return userMe;
+      return null;
     }
   }
 

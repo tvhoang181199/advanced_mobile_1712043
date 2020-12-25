@@ -1,6 +1,7 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/InstructorModel.dart';
 import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:imagebutton/imagebutton.dart';
@@ -22,7 +23,6 @@ var browsePageKey = GlobalKey<NavigatorState>();
 
 class _BrowsePage extends State<BrowsePage>{
   final skillList = ['Swift','Python', 'Flutter', 'Marketing', 'Java'];
-  final authorList = ['PHHai', 'NLHDung', 'TMTriet', 'KMCanh'];
 
   List<InstructorModel> listInstructors;
   bool _isLoading = false;
@@ -32,7 +32,6 @@ class _BrowsePage extends State<BrowsePage>{
       _isLoading = true;
     });
     listInstructors = await APIServer().fetchInstructors();
-    print(listInstructors[2].userAvatar);
     setState(() {
       _isLoading = false;
     });
@@ -315,7 +314,7 @@ class _BrowsePage extends State<BrowsePage>{
                                                               fullscreenDialog: true,
                                                               builder: (context) => CoursesFilteredPage(),
                                                               settings: RouteSettings(
-                                                                arguments: '1${authorList[index]}',
+                                                                arguments: '1${listInstructors[index].userName}',
                                                               ),
                                                             )
                                                         );

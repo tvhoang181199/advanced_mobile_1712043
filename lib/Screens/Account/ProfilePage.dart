@@ -1,7 +1,5 @@
 import 'package:DARKEN/APIs/APIServer.dart';
-import 'package:DARKEN/Models/InstructorModel.dart';
 import 'package:DARKEN/Models/UserMeModel.dart';
-import 'package:DARKEN/Models/UserModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +18,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
 
-  List<InstructorModel> list;
   UserMeModel currentUser;
   bool _isLoading = false;
 

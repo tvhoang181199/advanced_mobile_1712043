@@ -97,7 +97,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                   Container(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      (currentUser != null) ? currentUser.payload.email : 'null',
+                      (currentUser != null) ? (currentUser.payload.email ?? 'null') : 'null',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,
@@ -105,7 +105,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                     ),
                   ),
                   Text(
-                    (currentUser != null) ? currentUser.payload.type : 'null',
+                    (currentUser != null) ? (currentUser.payload.type ?? 'null') : 'null',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: AppColors.darkGreyColor,
@@ -135,7 +135,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                                 ),
                               ),
                               Text(
-                                  (currentUser != null) ? currentUser.payload.phone : 'null'
+                                  (currentUser != null) ? (currentUser.payload.phone ?? 'null') : 'null'
                               )
                             ],
                           ),
@@ -148,14 +148,16 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'VIDEOS',
+                                'FACEBOOK',
                                 style: TextStyle(
                                   color: Colors.amber,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text('25')
+                              Text(
+                                  (currentUser != null) ? (currentUser.payload.facebookId ?? 'null') : 'null'
+                              )
                             ],
                           ),
                           decoration: BoxDecoration(
@@ -179,14 +181,16 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'COURSES',
+                                'GOOGLE',
                                 style: TextStyle(
                                   color: Colors.purple,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text('3')
+                              Text(
+                                  (currentUser != null) ? (currentUser.payload.googleId ?? 'null') : 'null'
+                              )
                             ],
                           ),
                         )

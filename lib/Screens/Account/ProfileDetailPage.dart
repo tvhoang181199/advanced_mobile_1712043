@@ -41,9 +41,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
       child: ClipOval(
         child: Container(
           color: AppColors.greyColor,
-          child: Image.asset(
-            'assets/Icons/default-avatar.png',
-          ),
+          child: (currentUser != null) ? Image.network(currentUser.payload.avatar) : Image.asset('assets/Icons/default-avatar.png'),
         )
       ),
     );
@@ -99,7 +97,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                   Container(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      (currentUser != null) ? currentUser.payload.phone : 'null',
+                      (currentUser != null) ? currentUser.payload.email : 'null',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,
@@ -129,14 +127,16 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'TOTAL HOURS',
+                                'PHONE',
                                 style: TextStyle(
                                   color: AppColors.buttonColor,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text('46')
+                              Text(
+                                  (currentUser != null) ? currentUser.payload.phone : 'null'
+                              )
                             ],
                           ),
                         ),

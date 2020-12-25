@@ -9,6 +9,9 @@ class InstructorModel extends ChangeNotifier {
   InstructorModel({
     this.id,
     this.userId,
+    this.userEmail,
+    this.userAvatar,
+    this.userName,
     this.major,
     this.intro,
     this.skills,
@@ -20,6 +23,9 @@ class InstructorModel extends ChangeNotifier {
 
   String id;
   String userId;
+  String userEmail;
+  String userAvatar;
+  String userName;
   String major;
   String intro;
   List<String> skills;
@@ -31,6 +37,9 @@ class InstructorModel extends ChangeNotifier {
   factory InstructorModel.fromJson(Map<String, dynamic> json) => InstructorModel(
     id: json["id"],
     userId: json["userId"],
+    userEmail: json["user.email"],
+    userAvatar: json["user.avatar"],
+    userName: json["user.name"],
     major: json["major"],
     intro: json["intro"],
     skills: List<String>.from(json["skills"].map((x) => x)),
@@ -43,6 +52,9 @@ class InstructorModel extends ChangeNotifier {
   Map<String, dynamic> toJson() => {
     "id": id,
     "userId": userId,
+    "user.email": userEmail,
+    "user.avatar": userAvatar,
+    "user.name": userName,
     "major": major,
     "intro": intro,
     "skills": List<dynamic>.from(skills.map((x) => x)),

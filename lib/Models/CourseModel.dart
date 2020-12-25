@@ -65,6 +65,7 @@ class CourseModel {
   DateTime updatedAt;
   String instructorId;
   int typeUploadVideoLesson;
+
   String teacher;
   int downloadedVideos;
   List<bool> downloadedVideosList;

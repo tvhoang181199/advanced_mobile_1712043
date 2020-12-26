@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 
 import 'package:DARKEN/Screens/Home/CourseDetailPage.dart';
 
@@ -49,7 +49,7 @@ class _DownloadPage extends State<DownloadPage> {
                                 ),
                               ),
                               Expanded(
-                                child: Consumer<ListCoursesModel>(
+                                child: Consumer<ListCoursesModelOffline>(
                                     builder: (context, listCourses, _) {
                                       return (listCourses.downloadedListCourses.length == 0)?Container(
                                         alignment: Alignment.center,

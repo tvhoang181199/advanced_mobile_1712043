@@ -6,7 +6,7 @@ import 'package:DARKEN/Screens/Account/ProfilePage.dart';
 import 'package:DARKEN/Screens/Search/SearchPage.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
 
-import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 import 'package:provider/provider.dart';
 
 
@@ -39,7 +39,7 @@ class _BottomTabbar extends State<BottomTabbar> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ListCoursesModel()),
+        ChangeNotifierProvider(create: (context) => ListCoursesModelOffline()),
       ],
       child: WillPopScope(
         child: Scaffold(

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-CourseModel courseModelFromJson(String str) => CourseModel.fromJson(json.decode(str));
+CourseModelOffline courseModelFromJson(String str) => CourseModelOffline.fromJson(json.decode(str));
 
-String courseModelToJson(CourseModel data) => json.encode(data.toJson());
+String courseModelToJson(CourseModelOffline data) => json.encode(data.toJson());
 
-class CourseModel {
-  CourseModel({
+class CourseModelOffline {
+  CourseModelOffline({
     this.id,
     this.title,
     this.subtitle,
@@ -31,7 +31,7 @@ class CourseModel {
     this.typeUploadVideoLesson,
   });
 
-  CourseModel.short(
+  CourseModelOffline.short(
       this.id,
       this.title,
       this.description,
@@ -70,7 +70,7 @@ class CourseModel {
   int downloadedVideos;
   List<bool> downloadedVideosList;
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
+  factory CourseModelOffline.fromJson(Map<String, dynamic> json) => CourseModelOffline(
     id: json["id"],
     title: json["title"],
     subtitle: json["subtitle"],

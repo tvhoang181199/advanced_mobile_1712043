@@ -1,5 +1,5 @@
-import 'package:DARKEN/Models/CourseModel.dart';
-import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:DARKEN/Models/CourseModelOffline.dart';
+import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +18,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPage extends State<SearchPage> {
   var _searchPageKey = GlobalKey<NavigatorState>();
 
-  List<CourseModel> _searchList = [];
+  List<CourseModelOffline> _searchList = [];
   TextEditingController textController = new TextEditingController();
 
   @override
@@ -33,7 +33,7 @@ class _SearchPage extends State<SearchPage> {
               } else {
                 return MaterialPageRoute(
                     builder: (context) => SafeArea(
-                        child: Consumer<ListCoursesModel>(
+                        child: Consumer<ListCoursesModelOffline>(
                             builder: (context, listCourses, _) {
                               return Container(
                                 width: MediaQuery.of(context).size.width,

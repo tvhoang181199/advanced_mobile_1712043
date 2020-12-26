@@ -1,7 +1,6 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/InstructorModel.dart';
-import 'package:DARKEN/Models/ListCoursesModel.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:imagebutton/imagebutton.dart';
@@ -85,7 +84,7 @@ class _BrowsePage extends State<BrowsePage>{
                     return MaterialPageRoute(
                         builder: (context) => Container(
                           padding: EdgeInsets.only(top: 20, bottom: 20),
-                          child: Consumer<ListCoursesModel>(
+                          child: Consumer<ListCoursesModelOffline>(
                               builder: (context, listCourses, _) {
                                 return ListView.builder  (
                                     scrollDirection: Axis.vertical,

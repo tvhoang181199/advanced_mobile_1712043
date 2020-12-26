@@ -1,5 +1,5 @@
-import 'package:DARKEN/Models/CourseModel.dart';
-import 'package:DARKEN/Models/ListCoursesModel.dart';
+import 'package:DARKEN/Models/CourseModelOffline.dart';
+import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +17,7 @@ class CourseDetailPage extends StatefulWidget {
 class _CourseDetailPage extends State<CourseDetailPage> {
   @override
   Widget build(BuildContext context) {
-    final CourseModel _course = ModalRoute.of(context).settings.arguments;
+    final CourseModelOffline _course = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -59,7 +59,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                       ),
                     )
                 ),
-                Consumer<ListCoursesModel>(
+                Consumer<ListCoursesModelOffline>(
                     builder: (context, listCourses, _) {
                       return Container(
                         height: listCourses.listCourses.singleWhere((element) => element.id == _course.id).videoNumber*100.0,

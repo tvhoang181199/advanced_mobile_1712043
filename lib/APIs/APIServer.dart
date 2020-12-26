@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'package:DARKEN/BottomTabbar.dart';
-import 'package:DARKEN/Models/CourseModel.dart';
+import 'package:DARKEN/Models/CourseModelOnline.dart';
 import 'package:DARKEN/Models/InstructorModel.dart';
-import 'package:DARKEN/Models/UserModel.dart';
-import 'package:DARKEN/Screens/Home/CourseDetailPage.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:DARKEN/Models/UserMeModel.dart';
@@ -48,7 +45,7 @@ class APIServer{
     Map data = {
       'email': email
     };
-    var response = await http.post(api_server + "/user/forget-pass/send-email",body: data);
+    var response = await http.post(api_server + "/user/forget-pass/send-email", body: data);
     return response;
   }
 
@@ -69,24 +66,24 @@ class APIServer{
     }
   }
 
- Future fetchTopNewCourses(int limit, int page) async {
-   var response = await http.post(api_server + "/course/top-new", body: {'limit':limit,'page':page});
+ Future<List<CourseModelOnline>> fetchTopNewCourses(int limit, int page) async {
+   var response = await http.post(api_server + "/course/top-new", body: {'limit':limit.toString(),'page':page.toString()});
    print("fetchTopNewCourses : " + response.body);
-   List<CourseModel> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModel.fromJson(data)).toList();
+   List<CourseModelOnline> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModelOnline.fromJson(data)).toList();
    return courses;
  }
 
- Future fetchTopRateCourses(int limit, int page) async {
-   var response = await http.post(api_server + "/course/top-rate", body: {'limit':limit,'page':page});
+ Future<List<CourseModelOnline>> fetchTopRateCourses(int limit, int page) async {
+   var response = await http.post(api_server + "/course/top-rate", body: {'limit':limit.toString(),'page':page.toString()});
    print("fetchTopRateCourses : " + response.body);
-   List<CourseModel> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModel.fromJson(data)).toList();
+   List<CourseModelOnline> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModelOnline.fromJson(data)).toList();
    return courses;
  }
 
-  Future fetchTopSellCourses(int limit, int page) async {
-    var response = await http.post(api_server + "/course/top-sell", body: {'limit':limit,'page':page});
-    print("fetchTopRateCourses : " + response.body);
-    List<CourseModel> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModel.fromJson(data)).toList();
+  Future<List<CourseModelOnline>> fetchTopSellCourses(int limit, int page) async {
+    var response = await http.post(api_server + "/course/top-sell", body: {'limit':limit.toString(),'page':page.toString()});
+    print("fetchTopSellCourses : " + response.body);
+    List<CourseModelOnline> courses = (json.decode(response.body)['payload'] as List).map((data) => CourseModelOnline.fromJson(data)).toList();
     return courses;
   }
   

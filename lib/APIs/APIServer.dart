@@ -30,6 +30,13 @@ class APIServer{
     prefs.setString(key, value);
   }
 
+  updateStringList(String key, List<String> value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final _key = key;
+    final _value = value;
+    prefs.setStringList(key, value);
+}
+
   Future register(String username, String email, String phone, String password) async{
     Map data = {
       'username': username,
@@ -64,6 +71,18 @@ class APIServer{
     else {
       return null;
     }
+  }
+
+  Future updateUserInfo(String name, String avatar, String phone) async{
+    Map data = {
+      'name': name,
+      'avatar': avatar,
+      'phone': phone,
+    };
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    final response = await http.put(api_server + "/user/update-profile",headers: {"Authorization": "Bearer $token"},body:data );
+    return response;
   }
 
  Future<List<CourseModelOnline>> fetchTopNewCourses(int limit, int page) async {

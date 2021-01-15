@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:DARKEN/Screens/Home/CourseDetailPage.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatefulWidget {
   static String tag = '/browse-page';

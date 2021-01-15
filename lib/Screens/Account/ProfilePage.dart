@@ -1,5 +1,6 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/UserMeModel.dart';
+import 'package:DARKEN/Screens/Account/EditProfilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -132,9 +133,14 @@ class _ProfilePage extends State<ProfilePage> {
         )
     );
 
-    final settingsRow = GestureDetector(
+    final updateProfileRow = GestureDetector(
         onTap: (){
-          print('Clicked on Settings');
+          Navigator.of(context).push(
+              CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => EditProfilePage(userMe: currentUser)
+              )
+          );
         },
         child: Container(
             padding: EdgeInsets.only(left: 20, right: 20),
@@ -163,52 +169,7 @@ class _ProfilePage extends State<ProfilePage> {
                 Container(
                   padding: EdgeInsets.only(left: 20, top:20),
                   child: Text(
-                    'Settings',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                )
-              ],
-            )
-        )
-    );
-
-    final analyticsRow = GestureDetector(
-        onTap: (){
-          print('Clicked on Analytics');
-        },
-        child: Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom: BorderSide(
-                      color: AppColors.greyColor,
-                      width: 1,
-                    )
-                )
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Icon(
-                    Icons.bar_chart,
-                    size: 30,
-                    color: AppColors.themeColor,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 20, top:20),
-                  child: Text(
-                    'Analytics',
+                    'Update profile',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -349,8 +310,7 @@ class _ProfilePage extends State<ProfilePage> {
                   children: <Widget>[
                     headerBox,
                     profileRow,
-                    analyticsRow,
-                    settingsRow,
+                    updateProfileRow,
                     supportRow,
                     logoutRow,
                   ],

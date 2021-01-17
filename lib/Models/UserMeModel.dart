@@ -12,11 +12,11 @@ class UserMeModel extends ChangeNotifier{
   });
 
   String message;
-  Payload payload;
+  PayloadUserMe payload;
 
   factory UserMeModel.fromJson(Map<String, dynamic> json) => UserMeModel(
     message: json["message"],
-    payload: Payload.fromJson(json["payload"]),
+    payload: PayloadUserMe.fromJson(json["payload"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -25,8 +25,8 @@ class UserMeModel extends ChangeNotifier{
   };
 }
 
-class Payload {
-  Payload({
+class PayloadUserMe {
+  PayloadUserMe({
     this.id,
     this.email,
     this.avatar,
@@ -58,7 +58,7 @@ class Payload {
   DateTime createdAt;
   DateTime updatedAt;
 
-  factory Payload.fromJson(Map<String, dynamic> json) => Payload(
+  factory PayloadUserMe.fromJson(Map<String, dynamic> json) => PayloadUserMe(
     id: json["id"],
     email: json["email"],
     avatar: json["avatar"],

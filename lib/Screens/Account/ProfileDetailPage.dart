@@ -97,7 +97,7 @@ class _ProfileDetailPage extends State<ProfileDetailPage> {
                   Container(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      (currentUser != null) ? (currentUser.payload.email ?? 'null') : 'null',
+                      (currentUser != null) ? (currentUser.payload.name ?? 'null') : 'null',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,

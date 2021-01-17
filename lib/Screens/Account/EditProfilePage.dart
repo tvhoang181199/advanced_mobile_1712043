@@ -1,10 +1,13 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/UserMeModel.dart';
+import 'package:DARKEN/Screens/Account/ProfilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
+
+import 'package:http/http.dart' as http;
 
 class EditProfilePage extends StatefulWidget {
   static String tag = '/edit-profile-page';
@@ -20,8 +23,10 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   TextEditingController _nameTextController = new TextEditingController();
   TextEditingController _phoneTextController = new TextEditingController();
-  TextEditingController _passwordTextController = new TextEditingController();
-  TextEditingController _confirmPasswordTextController = new TextEditingController();
+  TextEditingController _oldPasswordTextController = new TextEditingController();
+  TextEditingController _newPasswordTextController = new TextEditingController();
+
+  bool _isLoading = false;
 
   UserMeModel userMe;
   _EditProfilePage(this.userMe);
@@ -45,7 +50,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                   color: AppColors.themeColor,
                   fontSize: 18.0)
           ),
-          content: Text("Enter name and phone for update information, or password and confirm password to change password."),
+          content: Text("Enter name and phone for update information, or old and new password to change password."),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -69,6 +74,237 @@ class _EditProfilePage extends State<EditProfilePage> {
   Widget build(BuildContext context) {
 
     final node = FocusScope.of(context);
+
+    void _updateTapped() async {
+      var name = _nameTextController.text;
+      var phone = _phoneTextController.text;
+
+      if (_nameTextController.text == "" ||
+          _phoneTextController.text == "") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 18.0)
+              ),
+              content: Text("Please enter new name and new phone!"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text(
+                      "Try again",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16.0)
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else {
+        setState(() {
+          _isLoading = true;
+        });
+
+        http.Response response = await APIServer().updateUserInfo(name, userMe.payload.avatar, phone);
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (response.statusCode == 200){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text("SUCCESS",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.themeColor,
+                        fontSize: 18.0)
+                ),
+                content: Text(
+                  "Your account has been updated!",
+                  style: TextStyle(
+                      color: AppColors.darkGreyColor
+                  ),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text("OK", style: TextStyle(
+                        color: AppColors.themeColor, fontSize: 16.0)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text(
+                    "FAILED",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.errorColor,
+                        fontSize: 18.0)
+                ),
+                content: Text("Your information has not been updated!"),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text(
+                        "Try again",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16.0)
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    }
+
+    void _changePasswordTapped() async {
+      var oldPassword = _oldPasswordTextController.text;
+      var newPassword = _newPasswordTextController.text;
+
+      if (_oldPasswordTextController.text == "" ||
+          _newPasswordTextController.text == "") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                  "FAILED",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.errorColor,
+                      fontSize: 18.0)
+              ),
+              content: Text("Please enter old and new password!"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: Text(
+                      "Try again",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16.0)
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else {
+        setState(() {
+          _isLoading = true;
+        });
+
+        http.Response response = await APIServer().changePassword(userMe.payload.id, oldPassword, newPassword);
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (response.statusCode == 200){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text("SUCCESS",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.themeColor,
+                        fontSize: 18.0)
+                ),
+                content: Text(
+                  "Your password has been changed!",
+                  style: TextStyle(
+                      color: AppColors.darkGreyColor
+                  ),
+                ),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text("OK", style: TextStyle(
+                        color: AppColors.themeColor, fontSize: 16.0)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: Text(
+                    "FAILED",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.errorColor,
+                        fontSize: 18.0)
+                ),
+                content: Text("Your password has not been changed!"),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: Text(
+                        "Try again",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16.0)
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    }
 
     final nameTextField = TextField(
       controller: _nameTextController,
@@ -134,14 +370,14 @@ class _EditProfilePage extends State<EditProfilePage> {
       ),
     );
 
-    final passwordTextField = TextField(
-      controller: _passwordTextController,
+    final oldPasswordTextField = TextField(
+      controller: _oldPasswordTextController,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => node.nextFocus(),
       obscureText: true,
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: 'Old Password',
         labelStyle: TextStyle(
           color: AppColors.themeColor,
         ),
@@ -167,14 +403,14 @@ class _EditProfilePage extends State<EditProfilePage> {
       ),
     );
 
-    final confirmPasswordTextField = TextField(
-      controller: _confirmPasswordTextController,
+    final newPasswordTextField = TextField(
+      controller: _newPasswordTextController,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onEditingComplete: () => node.unfocus(),
       obscureText: true,
       decoration: InputDecoration(
-        labelText: 'Confirm Password',
+        labelText: 'New Password',
         labelStyle: TextStyle(
           color: AppColors.themeColor,
         ),
@@ -214,7 +450,7 @@ class _EditProfilePage extends State<EditProfilePage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      onPressed: (){},
+      onPressed: _updateTapped,
     );
 
     final changePasswordButton = RaisedButton(
@@ -231,8 +467,32 @@ class _EditProfilePage extends State<EditProfilePage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      onPressed: (){},
+      onPressed: _changePasswordTapped,
     );
+
+    Widget loadingIndicator = _isLoading ? new Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Color.fromRGBO(0, 0, 0, 0.2),
+        ),
+        Align(
+          child: Container(
+            color: Colors.grey[700],
+            width: 70.0,
+            height: 70.0,
+            child: new Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: new Center(
+                    child: new CircularProgressIndicator()
+                )
+            ),
+          ),
+          alignment: FractionalOffset.center,
+        )
+      ],
+    ) : new Container();
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -265,9 +525,9 @@ class _EditProfilePage extends State<EditProfilePage> {
                                 SizedBox(height: 10),
                                 phoneTextField,
                                 SizedBox(height: 10),
-                                passwordTextField,
+                                oldPasswordTextField,
                                 SizedBox(height: 10),
-                                confirmPasswordTextField,
+                                newPasswordTextField,
                                 SizedBox(height: 10),
                                 updateButton,
                                 SizedBox(height: 10),

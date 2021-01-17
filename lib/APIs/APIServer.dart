@@ -85,6 +85,18 @@ class APIServer{
     return response;
   }
 
+  Future changePassword(String id, String oldPassword, String newPassword) async{
+    Map data = {
+      'id' :id,
+      'oldPass' : oldPassword,
+      'newPass' : newPassword
+    };
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    final response = await http.post(api_server + "/user/change-password", headers: {"Authorization": "Bearer $token"},body: data);
+    return response;
+  }
+
  Future<List<CourseModelOnline>> fetchTopNewCourses(int limit, int page) async {
    var response = await http.post(api_server + "/course/top-new", body: {'limit':limit.toString(),'page':page.toString()});
    print("fetchTopNewCourses : " + response.body);

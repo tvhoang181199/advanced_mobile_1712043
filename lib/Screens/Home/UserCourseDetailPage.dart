@@ -1,7 +1,9 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CourseModelOnline.dart';
+import 'package:DARKEN/Models/CourseWithLessonModel.dart';
 import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
+import 'package:DARKEN/Screens/Home/LessonPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,58 +12,32 @@ import 'package:DARKEN/Styling/AppColors.dart';
 
 import "package:http/http.dart" as http;
 
-class CourseDetailPage extends StatefulWidget {
-  static String tag = '/course-detail-page';
+class UserCourseDetailPage extends StatefulWidget {
+  static String tag = '/user-course-detail-page';
 
   final String courseID;
-  CourseDetailPage({Key key, @required this.courseID}) : super(key: key);
+  UserCourseDetailPage({Key key, @required this.courseID}) : super(key: key);
 
   @override
-  _CourseDetailPage createState() => new _CourseDetailPage(courseID);
+  _UserCourseDetailPage createState() => new _UserCourseDetailPage(courseID);
 }
 
-class _CourseDetailPage extends State<CourseDetailPage> {
+class _UserCourseDetailPage extends State<UserCourseDetailPage> {
   String courseID;
-  _CourseDetailPage(this.courseID);
+  _UserCourseDetailPage(this.courseID);
 
   bool _isLoading = false;
 
-  bool _isLiked = false;
-  bool _isJoined = false;
-  CourseModelOnline course;
-  List<UserFavoriteCoursesModel> favoriteCourses;
-  List<UserProcessCoursesModel> processCourses;
+  CourseWithLessonModel course;
 
   void _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    course = await APIServer().fetchCourseWithID(courseID);
-    favoriteCourses = await APIServer().fetchUserFavoriteCourses();
-    processCourses = await APIServer().fetchUserProcessCourses();
-    _isLiked = favoriteCourses.where((element) => element.id == widget.courseID).toList().length == 0 ? false : true;
-    _isJoined = processCourses.where((element) => element.id == widget.courseID).toList().length == 0 ? false : true;
+    course = await APIServer().fetchCourseWithLession(courseID);
     setState(() {
       _isLoading = false;
     });
-  }
-
-  void _likeCourseTapped() async {
-    http.Response response = await APIServer().likeCourseWithID(courseID);
-    if (response.statusCode == 200) {
-      setState(() {
-        _isLiked = true;
-      });
-    }
-  }
-
-  void _joinCourseTapped() async {
-    http.Response response = await APIServer().joinCourseWithID(courseID);
-    if (response.statusCode == 200) {
-      setState(() {
-        _isJoined = true;
-      });
-    }
   }
 
   @override void initState() {
@@ -148,49 +124,54 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                       child: Text("Total hours: " + course.totalHours.toString()),
                     ),
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _isLiked ? Container(
-                            padding: EdgeInsets.only(left: 50, top: 15, right:15),
-                            height: 50,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
-                              onPressed: (){},
-                              color: AppColors.themeColor,
-                              child: Text('Liked', style: TextStyle(color: Colors.white)),
-                            ),
-                          ) : Container(
-                            padding: EdgeInsets.only(left: 50, top: 15, right:15),
-                            height: 50,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(color: AppColors.themeColor)),
-                              onPressed: _likeCourseTapped,
-                              color: Colors.white,
-                              child: Text('Like', style: TextStyle(color: AppColors.themeColor)),
-                            ),
-                          ),
-                          _isJoined ? Container(
-                            padding: EdgeInsets.only(left: 15, top: 15, right: 50),
-                            height: 50,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
-                              onPressed: (){},
-                              color: AppColors.themeColor,
-                              child: Text('Joined', style: TextStyle(color: Colors.white)),
-                            ),
-                          ) : Container(
-                            padding: EdgeInsets.only(left: 15, top: 15, right: 50),
-                            height: 50,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(color: AppColors.themeColor)),
-                              onPressed: _joinCourseTapped,
-                              color: Colors.white,
-                              child: Text('Join', style: TextStyle(color: AppColors.themeColor)),
-                            ),
-                          ),
-                        ],
+                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                      child: Text("Requirement: " + course.requirement.map((e) => e).toString()),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Text(
+                        "SESSIONS",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.themeColor
+                        ),
                       ),
+                    ),
+                    course == null ? Container() : Container(
+                        height: course.section.length.toDouble()*60,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: course.section.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                child : GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => LessonPage(section: course.section[index], videoURL: course.promoVidUrl)
+                                          )
+                                      );
+                                    },
+                                    child: Card(
+                                      child: Container(
+                                          padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  "Session ${index+1}: " + course.section[index].name,
+                                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                                            ],
+                                          )
+                                      ),
+                                    )
+                                )
+                            );
+                          },
+                        )
                     )
                   ],
                 ),

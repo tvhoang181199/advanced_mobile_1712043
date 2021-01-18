@@ -4,6 +4,7 @@ import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
 import 'package:DARKEN/Screens/Home/CoursesFilteredPage.dart';
 import 'package:DARKEN/Screens/Home/FavoriteCoursesPage.dart';
+import 'package:DARKEN/Screens/Home/UserCourseDetailPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -31,7 +32,7 @@ class _HomePage extends State<HomePage> {
       _isLoading = true;
     });
 
-    recommendedCourses = await APIServer().fetchTopSellCourses(10, 1);
+    recommendedCourses = await APIServer().fetchTopSellCourses(15, 1);
     favoriteCourses = await APIServer().fetchUserFavoriteCourses();
     myCourses = await APIServer().fetchUserProcessCourses();
 
@@ -236,11 +237,86 @@ class _HomePage extends State<HomePage> {
                             onPageChanged: null,
                             scrollDirection: Axis.horizontal,
                           ),
-                          items: favoriteCourses.map((item) {
+                          items: favoriteCourses.length <= 5 ? favoriteCourses.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => CourseDetailPage(courseID: item.id)
+                                          )
+                                      ).then((value) => _fetchData());
+                                    },
+                                    child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.only(left: 0, right: 20),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: AppColors.greyColor,
+                                              width: 1,
+                                            )
+                                        ),
+                                        child: Container(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 140,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(5),
+                                                      topRight: Radius.circular(5),
+                                                    )
+                                                ),
+                                                child: ClipRRect(
+                                                    borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(5),
+                                                      topRight: Radius.circular(5),
+                                                    ),
+                                                    child: Image.network(item.courseImage, fit: BoxFit.cover)
+                                                ),
+                                              ),
+                                              Expanded(
+                                                  child: Container(
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Text(
+                                                            item.courseTitle,
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                  )
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                    )
+                                );
+                              },
+                            );
+                          }).toList() : favoriteCourses.sublist(0,5).map((item) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => CourseDetailPage(courseID: item.id)
+                                          )
+                                      ).then((value) => _fetchData());
+                                    },
                                     child: Container(
                                         width: MediaQuery.of(context).size.width,
                                         margin: EdgeInsets.only(left: 0, right: 20),
@@ -322,7 +398,14 @@ class _HomePage extends State<HomePage> {
                                 itemCount: myCourses.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
-                                    onTap: (){},
+                                    onTap: (){
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => UserCourseDetailPage(courseID: myCourses[index].id)
+                                          )
+                                      ).then((value) => _fetchData());
+                                    },
                                     child: Container(
                                         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                         height: 120,
@@ -340,7 +423,6 @@ class _HomePage extends State<HomePage> {
                                                       child: Image.network(myCourses[index].courseImage),
                                                     ),
                                                   ),
-
                                                   Expanded(
                                                       child: Container(
                                                           padding: EdgeInsets.all(5),
@@ -349,7 +431,8 @@ class _HomePage extends State<HomePage> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: <Widget>[
                                                               Text(myCourses[index].courseTitle, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                              Text(myCourses[index].instructorName, style: TextStyle(fontSize: 10)),
+                                                              Text("Instructor: " + myCourses[index].instructorName, style: TextStyle(fontSize: 10)),
+                                                              Text("Process: " + myCourses[index].process.toString(), style: TextStyle(fontSize: 10)),
                                                               // RatingBox(),
                                                             ],
                                                           )

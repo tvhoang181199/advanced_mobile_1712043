@@ -12,7 +12,7 @@ import 'package:DARKEN/Styling/AppColors.dart';
 import 'package:http/http.dart' as http;
 
 class FavoriteCoursesPage extends StatefulWidget {
-  static String tag = '/courses-filtered-page';
+  static String tag = '/favorite-courses-page';
 
   final String cateID;
   FavoriteCoursesPage({Key key, @required this.cateID}) : super(key: key);

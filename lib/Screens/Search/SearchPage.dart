@@ -83,17 +83,13 @@ class _SearchPage extends State<SearchPage> {
                             textInputAction: TextInputAction.search,
                             onSubmitted: (searchString) {
                               listSearchCourses.clear();
-                              if (searchString != "") {
-                                _fetchData();
-                              }
-
+                              _fetchData();
                             },
                             decoration: InputDecoration(
                               hintText: 'Search',
                               suffixIcon: IconButton(
                                   onPressed: (){
                                     textController.clear();
-                                    listSearchCourses.clear();
                                     setState(() {});
                                   },
                                   icon: Icon(
@@ -124,8 +120,17 @@ class _SearchPage extends State<SearchPage> {
                           )
                       ),
                       Expanded(
-                          child: listSearchCourses == null ? Container() : Container(
-                            child: listSearchCourses.length != 0 || textController.text.isNotEmpty ? new ListView.builder(
+                          child: (listSearchCourses == null || listSearchCourses.length == 0) ? Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "No courses found!",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ) : Container(
+                            child: ListView.builder(
                                 itemCount: listSearchCourses.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
@@ -174,62 +179,7 @@ class _SearchPage extends State<SearchPage> {
                                     ),
                                   );
                                 }
-                            ): ListView.builder(
-                                  itemCount: listSearchCourses.length+1,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: (){
-
-                                      },
-                                      child: (index == 0) ? Container(
-                                        padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
-                                        child: Text(
-                                          'History',
-                                          style: TextStyle(
-                                              color: AppColors.themeColor,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ): Container(
-                                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                          height: 120,
-                                          child: Card(
-                                              child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: <Widget>[
-                                                    AspectRatio(
-                                                      aspectRatio: 13/9,
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.only(
-                                                            topLeft: Radius.circular(4),
-                                                            bottomLeft: Radius.circular(4)
-                                                        ),
-                                                        child: Image.network(listSearchCourses[index].imageUrl),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                        child: Container(
-                                                            padding: EdgeInsets.all(5),
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: <Widget>[
-                                                                Text(listSearchCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(0,95) + "...", style: TextStyle(fontSize: 10)),
-                                                                Text('Rated: ' + listSearchCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
-                                                                // RatingBox(),
-                                                              ],
-                                                            )
-                                                        )
-                                                    )
-                                                  ]
-                                              )
-                                          )
-                                      ),
-                                    );
-                                  }
-                              )
+                            )
                           )
                       )
                     ],

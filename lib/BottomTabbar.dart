@@ -6,7 +6,6 @@ import 'package:DARKEN/Screens/Account/ProfilePage.dart';
 import 'package:DARKEN/Screens/Search/SearchPage.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
 
-import 'package:DARKEN/Models/ListCoursesModelOffline.dart';
 import 'package:provider/provider.dart';
 
 
@@ -37,50 +36,45 @@ class _BottomTabbar extends State<BottomTabbar> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ListCoursesModelOffline()),
-      ],
-      child: WillPopScope(
-        child: Scaffold(
-          body: Center(
-            child: _children.elementAt(_currentIndex),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            selectedItemColor: AppColors.themeColor,
-            unselectedItemColor: Colors.black38,
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-            onTap: _onTabTapped,
-            currentIndex: _currentIndex, // this will be set when a new tab is tapped
-            items: [
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.home),
-                title: new Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.arrow_circle_down),
-                title: new Text('Download'),
-              ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.drive_file_move),
-                title: new Text('Browse'),
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  title: Text('Search')
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('Profile')
-              )
-            ],
-          ),
+    return WillPopScope(
+      child: Scaffold(
+        body: Center(
+          child: _children.elementAt(_currentIndex),
         ),
-        onWillPop: () async => false,
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedItemColor: AppColors.themeColor,
+          unselectedItemColor: Colors.black38,
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          onTap: _onTabTapped,
+          currentIndex: _currentIndex, // this will be set when a new tab is tapped
+          items: [
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.home),
+              title: new Text('Home'),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.arrow_circle_down),
+              title: new Text('Download'),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.drive_file_move),
+              title: new Text('Browse'),
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                title: Text('Search')
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile')
+            )
+          ],
+        ),
       ),
+      onWillPop: () async => false,
     );
   }
 }

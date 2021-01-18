@@ -16,11 +16,11 @@ class SearchCourseModel {
     // this.formalityPoint,
     // this.contentPoint,
     // this.presentationPoint,
-    // this.videoNumber,
-    // this.totalHours,
+    this.videoNumber,
+    this.totalHours,
     this.imageUrl,
     // this.updatedAt,
-    // this.name,
+    this.name,
   });
 
   String title;
@@ -33,11 +33,11 @@ class SearchCourseModel {
   // double formalityPoint;
   // double contentPoint;
   // double presentationPoint;
-  // int videoNumber;
-  // double totalHours;
+  int videoNumber;
+  double totalHours;
   String imageUrl;
   // DateTime updatedAt;
-  // String name;
+  String name;
 
   factory SearchCourseModel.fromJson(Map<String, dynamic> json) => SearchCourseModel(
     title: json["title"],
@@ -50,11 +50,11 @@ class SearchCourseModel {
     // formalityPoint: json["formalityPoint"].toDouble(),
     // contentPoint: json["contentPoint"].toDouble(),
     // presentationPoint: json["presentationPoint"].toDouble(),
-    // videoNumber: json["videoNumber"],
-    // totalHours: json["totalHours"].toDouble(),
+    videoNumber: json["videoNumber"],
+    totalHours: json["totalHours"].toDouble(),
     imageUrl: json["imageUrl"],
     // updatedAt: DateTime.parse(json["updatedAt"]),
-    // name: json["name"],
+    name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -68,10 +68,10 @@ class SearchCourseModel {
     // "formalityPoint": formalityPoint,
     // "contentPoint": contentPoint,
     // "presentationPoint": presentationPoint,
-    // "videoNumber": videoNumber,
-    // "totalHours": totalHours,
+    "videoNumber": videoNumber,
+    "totalHours": totalHours,
     "imageUrl": imageUrl,
     // "updatedAt": updatedAt.toIso8601String(),
-    // "name": name,
+    "name": name,
   };
 }

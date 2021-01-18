@@ -3,6 +3,8 @@ import "package:DARKEN/Models/CategoryModel.dart";
 import "package:DARKEN/Models/CourseModelOnline.dart";
 import "package:DARKEN/Models/InstructorModel.dart";
 import 'package:DARKEN/Models/SearchCourseModel.dart';
+import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
+import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart";
@@ -35,7 +37,6 @@ class APIServer{
 
     if (response.statusCode == 200){
       final prefs = await SharedPreferences.getInstance();
-      print("token : ${jsData["token"]}");
       updateToken(jsData["token"]);
     }
     return response;
@@ -63,7 +64,7 @@ class APIServer{
   Future<UserMeModel> fetchUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.get("token");
-    print("token : " + token);
+    print("token: " + token);
     final response = await http.get(api_server + "/user/me"
         ,headers: {"Authorization": "Bearer $token"}
     );
@@ -136,28 +137,29 @@ class APIServer{
     return null;
   }
 
-  Future<List<CourseModelOnline>> fetchFavoriteCourse() async {
+  Future<List<UserFavoriteCoursesModel>> fetchUserFavoriteCourses() async {
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.get('token');
-    var response = await http.get(api_server +"/user/get-favorite-courses", headers: {"Authorization": "Bearer $token"});
-    if (response.statusCode == 200) {
-      List<CourseModelOnline> favoriteCourses = (jsonDecode(
-          response.body)['payload'] as List).map((data) =>
-          CourseModelOnline.fromJson(data)).toList();
-      return favoriteCourses;
-    }
-    return null;
+    var response = await http.get(api_server +"/user/get-favorite-courses",headers: {"Authorization": "Bearer $token"});
+
+    List<UserFavoriteCoursesModel> favoriteCourses = (jsonDecode(response.body)['payload'] as List).map((data) => UserFavoriteCoursesModel.fromJson(data)).toList();
+    return favoriteCourses;
   }
 
-  Future<List<CourseModelOnline>> fetchMyCourse() async {
+
+  Future<List<UserProcessCoursesModel>> fetchUserProcessCourses() async {
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.get('token');
     var response = await http.get(api_server +"/user/get-process-courses",headers: {"Authorization": "Bearer $token"});
-    if (response.statusCode == 200) {
-      List<CourseModelOnline> courses = (json.decode(
-          response.body)['payload'] as List).map((data) =>
-          CourseModelOnline.fromJson(data)).toList();
-      return courses;
+    List<UserProcessCoursesModel> courses = (json.decode(response.body)['payload'] as List).map((data) => UserProcessCoursesModel.fromJson(data)).toList();
+    return courses;
+  }
+
+  Future<CourseModelOnline> fetchCourseWithID(String courseID) async {
+    final response = await http.get(api_server + "/course/get-course-info?id=${courseID}");
+    if (response.statusCode == 200){
+      CourseModelOnline course = CourseModelOnline.fromJson(json.decode(response.body)['payload']);
+      return course;
     }
     return null;
   }
@@ -180,7 +182,6 @@ class APIServer{
     var response = await http.post(api_server + "/course/search", headers: {"content-type": "application/json"}, body: json.encode(data));
     if (response.statusCode == 200) {
       List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["rows"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
-
       return courses;
     }
     return null;
@@ -217,10 +218,24 @@ class APIServer{
     final response = await http.get(api_server + "/course/course-history");
     if (response.statusCode == 200) {
       List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["courses"]["data"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
-      print("history");
       return courses;
     }
     return null;
+  }
+
+  // ---- LIKE/JOIN COURSES ----
+  Future likeCourseWithID(String courseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    var response = await http.post(api_server + "/user/like-course", body: {"courseId": courseId}, headers: {"Authorization": "Bearer $token"});
+    return response;
+  }
+
+  Future joinCourseWithID(String courseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    var response = await http.post(api_server + "/payment/get-free-courses", body: {"courseId": courseId}, headers: {"Authorization": "Bearer $token"});
+    return response;
   }
 
   // ---- CATEGORIES ----
@@ -246,6 +261,7 @@ class APIServer{
     }
   }
 
+  // ---- INSTRUCTORS ----
   Future<List<InstructorModel>> fetchInstructors()  async {
     var response = await http.get(api_server + "/instructor");
     print("fetchInstructor : " + response.body);

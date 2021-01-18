@@ -2,6 +2,7 @@ import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CategoryModel.dart';
 import 'package:DARKEN/Models/CourseModelOnline.dart';
 import 'package:DARKEN/Models/SearchCourseModel.dart';
+import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Screens/Home/CourseDetailPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,43 +11,30 @@ import 'package:DARKEN/Styling/AppColors.dart';
 
 import 'package:http/http.dart' as http;
 
-class CoursesFilteredPage extends StatefulWidget {
+class FavoriteCoursesPage extends StatefulWidget {
   static String tag = '/courses-filtered-page';
 
   final String cateID;
-  CoursesFilteredPage({Key key, @required this.cateID}) : super(key: key);
+  FavoriteCoursesPage({Key key, @required this.cateID}) : super(key: key);
 
   @override
-  _CoursesFilteredPage createState() => new _CoursesFilteredPage(cateID);
+  _FavoriteCoursesPage createState() => new _FavoriteCoursesPage(cateID);
 }
 
-class _CoursesFilteredPage extends State<CoursesFilteredPage> {
+class _FavoriteCoursesPage extends State<FavoriteCoursesPage> {
 
   String cateID;
-  _CoursesFilteredPage(this.cateID);
+  _FavoriteCoursesPage(this.cateID);
 
   bool _isLoading = false;
-  List<CourseModelOnline> listCourses;
-  List<SearchCourseModel> listSearchCourses;
-  CategoryModel category;
+  List<UserFavoriteCoursesModel> listCourses;
 
   void _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    if (cateID == "TRENDING COURSES")
-      listCourses = await APIServer().fetchTopNewCourses(10, 1);
-    else if (cateID == "MADE FOR YOU")
-      listCourses = await APIServer().fetchTopRateCourses(10, 1);
-    else {
-      print(cateID);
-      category = await APIServer().fetchCategoryWithID(cateID);
-      listSearchCourses = await APIServer().fetchCoursesFromCategoryID(cateID);
-      print(listSearchCourses[0].id);
-      setState(() {
-        cateID = category.name;
-      });
-    }
+
+    listCourses = await APIServer().fetchUserFavoriteCourses();
 
     setState(() {
       _isLoading = false;
@@ -103,14 +91,14 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
-                    itemCount: listCourses != null ? listCourses.length : (listSearchCourses != null ? listSearchCourses.length : 0),
+                    itemCount: listCourses != null ? listCourses.length : 0,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
                               CupertinoPageRoute(
                                   fullscreenDialog: true,
-                                  builder: (context) => CourseDetailPage(courseID: listCourses != null ? listCourses[index].id : listSearchCourses[index].id)
+                                  builder: (context) => CourseDetailPage(courseID: listCourses[index].id)
                               )
                           );
                         },
@@ -128,7 +116,7 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                                               topLeft: Radius.circular(4),
                                               bottomLeft: Radius.circular(4)
                                           ),
-                                          child: listCourses != null ? Image.network(listCourses[index].imageUrl) : Image.network(listSearchCourses[index].imageUrl),
+                                          child: Image.network(listCourses[index].courseImage),
                                         ),
                                       ),
                                       Expanded(
@@ -137,15 +125,9 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: listCourses != null ? <Widget>[
-                                                  Text(listCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  listCourses[index].subtitle.length <= 100 ? Text(listCourses[index].subtitle, style: TextStyle(fontSize: 10)) : Text(listCourses[index].subtitle.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
-                                                  Text('Rated: ' + listCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
-                                                  // RatingBox(),
-                                                ] : <Widget>[
-                                                  Text(listSearchCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
-                                                  Text('Rated: ' + listSearchCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
+                                                children: <Widget>[
+                                                  Text(listCourses[index].courseTitle, style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  Text('Instructor: ' + listCourses[index].instructorName.toString(), style: TextStyle(fontSize: 10)),
                                                   // RatingBox(),
                                                 ],
                                               )

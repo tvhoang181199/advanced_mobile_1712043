@@ -1,5 +1,9 @@
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CourseModelOnline.dart';
+import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
+import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
+import 'package:DARKEN/Screens/Home/CoursesFilteredPage.dart';
+import 'package:DARKEN/Screens/Home/FavoriteCoursesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,8 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   List<CourseModelOnline> recommendedCourses;
-  List<CourseModelOnline> favoriteCourses;
-  List<CourseModelOnline> myCourses;
+  List<UserFavoriteCoursesModel> favoriteCourses;
+  List<UserProcessCoursesModel> myCourses;
 
   bool _isLoading = false;
 
@@ -28,8 +32,8 @@ class _HomePage extends State<HomePage> {
     });
 
     recommendedCourses = await APIServer().fetchTopSellCourses(10, 1);
-    favoriteCourses = await APIServer().fetchFavoriteCourse();
-    myCourses = await APIServer().fetchMyCourse();
+    favoriteCourses = await APIServer().fetchUserFavoriteCourses();
+    myCourses = await APIServer().fetchUserProcessCourses();
 
     setState(() {
       _isLoading = false;
@@ -108,7 +112,14 @@ class _HomePage extends State<HomePage> {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => CourseDetailPage(courseID: item.id)
+                                          )
+                                      ).then((value) => _fetchData());
+                                    },
                                     child: Container(
                                         width: MediaQuery.of(context).size.width,
                                         margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -167,16 +178,45 @@ class _HomePage extends State<HomePage> {
                             );
                           }).toList(),
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
-                          child: Text(
-                            'FAVORITES COURSES',
-                            style: TextStyle(
-                              color: AppColors.themeColor,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
+                              child: Text(
+                                'FAVORITES COURSES',
+                                style: TextStyle(
+                                  color: AppColors.themeColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
+                            Container(
+                              child: OutlineButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                          fullscreenDialog: true,
+                                          builder: (context) => FavoriteCoursesPage(cateID: "FAVORITES COURSES")
+                                      )
+                                  );
+                                },
+                                disabledBorderColor: Colors.transparent,
+                                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                borderSide: BorderSide.none,
+                                child: Text(
+                                    'See all',
+                                    style: TextStyle(
+                                        color: AppColors.themeColor,
+                                        decoration:TextDecoration.underline,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         (favoriteCourses == null || favoriteCourses.length == 0) ? Container(
                           height: 50,
@@ -229,7 +269,7 @@ class _HomePage extends State<HomePage> {
                                                       topLeft: Radius.circular(5),
                                                       topRight: Radius.circular(5),
                                                     ),
-                                                    child: Image.network(item.imageUrl, fit: BoxFit.cover)
+                                                    child: Image.network(item.courseImage, fit: BoxFit.cover)
                                                 ),
                                               ),
                                               Expanded(
@@ -239,7 +279,7 @@ class _HomePage extends State<HomePage> {
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           Text(
-                                                            item.title,
+                                                            item.courseTitle,
                                                             textAlign: TextAlign.center,
                                                             style: TextStyle(
                                                               fontSize: 14,
@@ -265,7 +305,7 @@ class _HomePage extends State<HomePage> {
                             'MY COURSES',
                             style: TextStyle(
                               color: AppColors.themeColor,
-                              fontSize: 25,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -297,7 +337,7 @@ class _HomePage extends State<HomePage> {
                                                           topLeft: Radius.circular(4),
                                                           bottomLeft: Radius.circular(4)
                                                       ),
-                                                      child: Image.network(myCourses[index].imageUrl),
+                                                      child: Image.network(myCourses[index].courseImage),
                                                     ),
                                                   ),
 
@@ -308,9 +348,8 @@ class _HomePage extends State<HomePage> {
                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: <Widget>[
-                                                              Text(myCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                              Text(myCourses[index].subtitle, style: TextStyle(fontSize: 10)),
-                                                              Text('Rated: ' + myCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
+                                                              Text(myCourses[index].courseTitle, style: TextStyle(fontWeight: FontWeight.bold)),
+                                                              Text(myCourses[index].instructorName, style: TextStyle(fontSize: 10)),
                                                               // RatingBox(),
                                                             ],
                                                           )

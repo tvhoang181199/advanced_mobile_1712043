@@ -86,9 +86,7 @@ class _SearchPage extends State<SearchPage> {
                               if (searchString != "") {
                                 _fetchData();
                               }
-                              else {
-                                setState(() {});
-                              }
+
                             },
                             decoration: InputDecoration(
                               hintText: 'Search',
@@ -127,12 +125,17 @@ class _SearchPage extends State<SearchPage> {
                       ),
                       Expanded(
                           child: listSearchCourses == null ? Container() : Container(
-                            child: listSearchCourses != null || textController.text.isNotEmpty ? new ListView.builder(
+                            child: listSearchCourses.length != 0 || textController.text.isNotEmpty ? new ListView.builder(
                                 itemCount: listSearchCourses.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: (){
-
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) => CourseDetailPage(courseID: listSearchCourses[index].id)
+                                          )
+                                      );
                                     },
                                     child: Container(
                                         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -159,7 +162,7 @@ class _SearchPage extends State<SearchPage> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: <Widget>[
                                                               Text(listSearchCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                              listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
+                                                              listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(0,95) + "...", style: TextStyle(fontSize: 10)),
                                                               Text('Rated: ' + listSearchCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
                                                             ],
                                                           )
@@ -175,7 +178,9 @@ class _SearchPage extends State<SearchPage> {
                                   itemCount: listSearchCourses.length+1,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: (){},
+                                      onTap: (){
+
+                                      },
                                       child: (index == 0) ? Container(
                                         padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                                         child: Text(
@@ -211,7 +216,7 @@ class _SearchPage extends State<SearchPage> {
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: <Widget>[
                                                                 Text(listSearchCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
+                                                                listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(0,95) + "...", style: TextStyle(fontSize: 10)),
                                                                 Text('Rated: ' + listSearchCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
                                                                 // RatingBox(),
                                                               ],

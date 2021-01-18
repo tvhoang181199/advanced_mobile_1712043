@@ -1,5 +1,7 @@
 import 'package:DARKEN/APIs/APIServer.dart';
+import 'package:DARKEN/Models/CategoryModel.dart';
 import 'package:DARKEN/Models/CourseModelOnline.dart';
+import 'package:DARKEN/Models/SearchCourseModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,29 +12,39 @@ import 'package:http/http.dart' as http;
 class CoursesFilteredPage extends StatefulWidget {
   static String tag = '/courses-filtered-page';
 
-  final String type;
-  CoursesFilteredPage({Key key, @required this.type}) : super(key: key);
+  final String cateID;
+  CoursesFilteredPage({Key key, @required this.cateID}) : super(key: key);
 
   @override
-  _CoursesFilteredPage createState() => new _CoursesFilteredPage(type);
+  _CoursesFilteredPage createState() => new _CoursesFilteredPage(cateID);
 }
 
 class _CoursesFilteredPage extends State<CoursesFilteredPage> {
 
-  final String type;
-  _CoursesFilteredPage(this.type);
+  String cateID;
+  _CoursesFilteredPage(this.cateID);
 
   bool _isLoading = false;
   List<CourseModelOnline> listCourses;
+  List<SearchCourseModel> listSearchCourses;
+  CategoryModel category;
 
   void _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    if (type == "TRENDING COURSES")
+    if (cateID == "TRENDING COURSES")
       listCourses = await APIServer().fetchTopNewCourses(10, 1);
-    else if (type == "MADE FOR YOU")
+    else if (cateID == "MADE FOR YOU")
       listCourses = await APIServer().fetchTopRateCourses(10, 1);
+    else {
+      print(cateID);
+      category = await APIServer().fetchCategoryWithID(cateID);
+      listSearchCourses = await APIServer().fetchCoursesFromCategoryID(cateID);
+      setState(() {
+        cateID = category.name;
+      });
+    }
 
     setState(() {
       _isLoading = false;
@@ -75,7 +87,7 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            type,
+            cateID,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -89,7 +101,7 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
-                    itemCount: listCourses != null ? listCourses.length : 0,
+                    itemCount: listCourses != null ? listCourses.length : (listSearchCourses != null ? listSearchCourses.length : 0),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: (){},
@@ -107,7 +119,7 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                                               topLeft: Radius.circular(4),
                                               bottomLeft: Radius.circular(4)
                                           ),
-                                          child: Image.network(listCourses[index].imageUrl),
+                                          child: listCourses != null ? Image.network(listCourses[index].imageUrl) : Image.network(listSearchCourses[index].imageUrl),
                                         ),
                                       ),
 
@@ -117,10 +129,15 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: <Widget>[
+                                                children: listCourses != null ? <Widget>[
                                                   Text(listCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  Text(listCourses[index].subtitle, style: TextStyle(fontSize: 10)),
+                                                  listCourses[index].subtitle.length <= 100 ? Text(listCourses[index].subtitle, style: TextStyle(fontSize: 10)) : Text(listCourses[index].subtitle.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
                                                   Text('Rated: ' + listCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
+                                                  // RatingBox(),
+                                                ] : <Widget>[
+                                                  Text(listSearchCourses[index].title, style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  listSearchCourses[index].description.length <= 100 ? Text(listSearchCourses[index].description, style: TextStyle(fontSize: 10)) : Text(listSearchCourses[index].description.substring(1,95) + "...", style: TextStyle(fontSize: 10)),
+                                                  Text('Rated: ' + listSearchCourses[index].ratedNumber.toString(), style: TextStyle(fontSize: 10)),
                                                   // RatingBox(),
                                                 ],
                                               )

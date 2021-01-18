@@ -19,7 +19,7 @@ class BrowsePage extends StatefulWidget{
 class _BrowsePage extends State<BrowsePage>{
   final skillList = ['Swift','Python', 'Flutter', 'Marketing', 'Java'];
 
-  CategoryModel categories;
+  List<CategoryModel> listCategories;
   List<InstructorModel> listInstructors;
   bool _isLoading = false;
 
@@ -28,7 +28,7 @@ class _BrowsePage extends State<BrowsePage>{
       _isLoading = true;
     });
     listInstructors = await APIServer().fetchInstructors();
-    categories = await APIServer().fetchAllCategories();
+    listCategories = await APIServer().fetchAllCategories();
     setState(() {
       _isLoading = false;
     });
@@ -97,7 +97,7 @@ class _BrowsePage extends State<BrowsePage>{
                                   Navigator.of(context).push(
                                       CupertinoPageRoute(
                                           fullscreenDialog: true,
-                                          builder: (context) => CoursesFilteredPage(type: "TRENDING COURSES")
+                                          builder: (context) => CoursesFilteredPage(cateID: "TRENDING COURSES")
                                       )
                                   );
                                 },
@@ -127,7 +127,7 @@ class _BrowsePage extends State<BrowsePage>{
                                   Navigator.of(context).push(
                                       CupertinoPageRoute(
                                           fullscreenDialog: true,
-                                          builder: (context) => CoursesFilteredPage(type: "MADE FOR YOU")
+                                          builder: (context) => CoursesFilteredPage(cateID: "MADE FOR YOU")
                                       )
                                   );
                                 },
@@ -153,13 +153,13 @@ class _BrowsePage extends State<BrowsePage>{
                                 enlargeCenterPage: true,
                                 scrollDirection: Axis.horizontal,
                               ),
-                              items: categories == null ? <Widget>[Container(height: 0)] : categories.payload.map((item) =>
+                              items: listCategories == null ? <Widget>[Container(height: 0)] : listCategories.map((item) =>
                                   GestureDetector(
                                     onTap: (){
                                       Navigator.of(context).push(
                                           CupertinoPageRoute(
                                               fullscreenDialog: true,
-                                              builder: (context) => CoursesFilteredPage(type: item.id)
+                                              builder: (context) => CoursesFilteredPage(cateID: item.id)
                                           )
                                       );
                                     },
@@ -169,7 +169,7 @@ class _BrowsePage extends State<BrowsePage>{
                                             alignment: Alignment.bottomCenter,
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                                              child: Image.asset("assets/Courses/golang-1.png", fit: BoxFit.cover),
+                                              child: Image.asset("assets/Courses/java-1.png", fit: BoxFit.cover),
                                             )
                                         ),
                                         Container(

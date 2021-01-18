@@ -122,7 +122,6 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
                                           child: listCourses != null ? Image.network(listCourses[index].imageUrl) : Image.network(listSearchCourses[index].imageUrl),
                                         ),
                                       ),
-
                                       Expanded(
                                           child: Container(
                                               padding: EdgeInsets.all(5),

@@ -63,6 +63,7 @@ class APIServer{
   Future<UserMeModel> fetchUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.get("token");
+    print("token : " + token);
     final response = await http.get(api_server + "/user/me"
         ,headers: {"Authorization": "Bearer $token"}
     );
@@ -177,9 +178,45 @@ class APIServer{
       "offset": 1
     };
     var response = await http.post(api_server + "/course/search", headers: {"content-type": "application/json"}, body: json.encode(data));
-    print("RESPONSE----" + response.body);
     if (response.statusCode == 200) {
       List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["rows"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
+
+      return courses;
+    }
+    return null;
+  }
+
+  Future<List<SearchCourseModel>> fetchSearchCoursesWithString(String searchString) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    Map<String, dynamic> data = {
+      "token": token,
+      "keyword": searchString,
+      "limit": 10,
+      "offset": 1,
+      "opt": {
+        "sort": {
+          "attribute": "updatedAt",
+          "rule": "DESC"
+        },
+        "category": [],
+        "time": [],
+        "price": []
+      }
+    };
+    var response = await http.post(api_server + "/course/searchV2", headers: {"content-type": "application/json"}, body: json.encode(data));
+    if (response.statusCode == 200) {
+      List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["courses"]["data"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
+
+      return courses;
+    }
+    return null;
+  }
+
+  Future<List<SearchCourseModel>> fetchHistorySearchCourses(String searchString) async {
+    final response = await http.get(api_server + "/course/course-history");
+    if (response.statusCode == 200) {
+      List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["courses"]["data"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
 
       return courses;
     }

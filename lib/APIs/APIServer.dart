@@ -217,7 +217,7 @@ class APIServer{
     final response = await http.get(api_server + "/course/course-history");
     if (response.statusCode == 200) {
       List<SearchCourseModel> courses = (json.decode(response.body)["payload"]["courses"]["data"] as List).map((data) => SearchCourseModel.fromJson(data)).toList();
-
+      print("history");
       return courses;
     }
     return null;

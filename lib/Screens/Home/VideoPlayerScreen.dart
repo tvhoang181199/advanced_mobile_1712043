@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'package:DARKEN/Models/CourseWithLessonModel.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   String videoURL;
-  VideoPlayerScreen({Key key, this.videoURL}): super(key: key);
+  Lesson lesson;
+  VideoPlayerScreen({Key key, this.videoURL, this.lesson}): super(key: key);
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
@@ -19,7 +21,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     _controller = VideoPlayerController.network(widget.videoURL);
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
-    print(widget.videoURL);
     super.initState();
   }
 
@@ -32,8 +33,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Video'),
+        title: Text(
+          widget.lesson.name,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: AppColors.themeColor,
       ),
       body: FutureBuilder(

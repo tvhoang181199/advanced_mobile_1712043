@@ -70,14 +70,13 @@ class _BrowsePage extends State<BrowsePage>{
         body: Stack(
           children: <Widget>[
             Container(
-                padding: EdgeInsets.only(top: 20, bottom: 20),
                 child: ListView.builder  (
                     scrollDirection: Axis.vertical,
                     itemCount: 8,
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return Container(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
                             child: ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(5)),
                               child: ImageButton(
@@ -266,7 +265,7 @@ class _BrowsePage extends State<BrowsePage>{
                           }
                           else {
                             return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                               height: MediaQuery.of(context).size.height * 0.2,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,

@@ -67,7 +67,7 @@ class _LessonPage extends State<LessonPage>{
                                     Navigator.of(context).push(
                                         CupertinoPageRoute(
                                             fullscreenDialog: true,
-                                            builder: (context) => VideoPlayerScreen(videoURL: widget.videoURL))
+                                            builder: (context) => VideoPlayerScreen(videoURL: widget.videoURL, lesson: widget.section.lesson[index]))
                                     );
                                   },
                                   child: Card(

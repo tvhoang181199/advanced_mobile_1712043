@@ -146,7 +146,7 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
                                       Navigator.of(context).push(
                                           CupertinoPageRoute(
                                               fullscreenDialog: true,
-                                              builder: (context) => LessonPage(section: course.section[index], videoURL: course.promoVidUrl)
+                                              builder: (context) => LessonPage(courseID: courseID, section: course.section[index])
                                           )
                                       );
                                     },

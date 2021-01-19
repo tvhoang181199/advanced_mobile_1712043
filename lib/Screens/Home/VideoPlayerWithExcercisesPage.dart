@@ -2,14 +2,15 @@ import 'dart:async';
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CourseWithLessonModel.dart';
 import 'package:DARKEN/Models/ExerciseModel.dart';
+import 'package:DARKEN/Models/LessonVideoModel.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerWithExercisesPage extends StatefulWidget {
-  String videoURL;
+  String courseID;
   Lesson lesson;
-  VideoPlayerWithExercisesPage({Key key, this.videoURL, this.lesson}): super(key: key);
+  VideoPlayerWithExercisesPage({Key key, this.courseID, this.lesson}): super(key: key);
   @override
   _VideoPlayerWithExercisesPage createState() => _VideoPlayerWithExercisesPage();
 }
@@ -21,13 +22,17 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
   bool _isLoading = false;
 
   List<ExerciseModel> listExercises;
+  LessonVideoModel lessonVideo;
 
   void _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    print("LessonID: " + widget.lesson.id);
+    lessonVideo = await APIServer().fetchLessonVideoWithCourseIDAndLessonID(widget.courseID, widget.lesson.id);
     listExercises = await APIServer().fetchExercisesWithLessonID(widget.lesson.id);
+    _controller = VideoPlayerController.network(lessonVideo.videoUrl);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
     setState(() {
       _isLoading = false;
     });
@@ -37,10 +42,6 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
   void initState() {
 
     _fetchData();
-
-    _controller = VideoPlayerController.network(widget.videoURL);
-    _initializeVideoPlayerFuture = _controller.initialize();
-    _controller.setLooping(true);
 
     super.initState();
   }
@@ -91,7 +92,7 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
       ),
       body: Stack(
         children: <Widget>[
-          Container(
+          lessonVideo == null ? Container() : Container(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -129,11 +130,7 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text("Video Name: " + widget.lesson.videoName),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text("Hours: " + widget.lesson.hours.toString()),
+                      child: Text("Hours: " + lessonVideo.currentTime.toString()),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -189,7 +186,7 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:  lessonVideo == null ? FloatingActionButton() : FloatingActionButton(
         backgroundColor: AppColors.themeColor,
         onPressed: () {
           setState(() {

@@ -4,6 +4,7 @@ import "package:DARKEN/Models/CourseModelOnline.dart";
 import 'package:DARKEN/Models/CourseWithLessonModel.dart';
 import 'package:DARKEN/Models/ExerciseModel.dart';
 import "package:DARKEN/Models/InstructorModel.dart";
+import 'package:DARKEN/Models/LessonVideoModel.dart';
 import 'package:DARKEN/Models/SearchCourseModel.dart';
 import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
@@ -232,6 +233,17 @@ class APIServer{
     if (response.statusCode == 200) {
       List<ExerciseModel> exercises = (json.decode(response.body)["payload"]["exercises"] as List).map((data) => ExerciseModel.fromJson(data)).toList();
       return exercises;
+    }
+    return null;
+  }
+
+  Future<LessonVideoModel> fetchLessonVideoWithCourseIDAndLessonID(String courseID, String lessonID) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.get('token');
+    final response = await http.get(api_server + "/lesson/video/" + courseID + "/" + lessonID, headers: {"Authorization": "Bearer $token", "content-type": "application/json"});
+    if (response.statusCode == 200) {
+      LessonVideoModel lessonVideo = LessonVideoModel.fromJson(json.decode(response.body)['payload']);
+      return lessonVideo;
     }
     return null;
   }

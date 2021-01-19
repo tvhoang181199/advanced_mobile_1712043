@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 class LessonPage extends StatefulWidget{
   static String tag = '/lesson-page';
 
+  String courseID;
   Section section;
-  String videoURL;
-  LessonPage({Key key, @required this.section, @required this.videoURL}) : super(key: key);
+  LessonPage({Key key, @required this.courseID, @required this.section}) : super(key: key);
 
   @override
   _LessonPage createState() => new _LessonPage();
@@ -64,7 +64,7 @@ class _LessonPage extends State<LessonPage>{
                                     Navigator.of(context).push(
                                         CupertinoPageRoute(
                                             fullscreenDialog: true,
-                                            builder: (context) => VideoPlayerWithExercisesPage(videoURL: widget.videoURL, lesson: widget.section.lesson[index]))
+                                            builder: (context) => VideoPlayerWithExercisesPage(courseID: widget.courseID, lesson: widget.section.lesson[index]))
                                     );
                                   },
                                   child: Card(

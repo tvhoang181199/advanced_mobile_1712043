@@ -1,11 +1,8 @@
 import 'package:DARKEN/Models/CourseWithLessonModel.dart';
-import 'package:DARKEN/Screens/Home/VideoPlayerScreen.dart';
+import 'package:DARKEN/Screens/Home/VideoPlayerWithExcercisesPage.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:video_player/video_player.dart';
 
 class LessonPage extends StatefulWidget{
   static String tag = '/lesson-page';
@@ -67,7 +64,7 @@ class _LessonPage extends State<LessonPage>{
                                     Navigator.of(context).push(
                                         CupertinoPageRoute(
                                             fullscreenDialog: true,
-                                            builder: (context) => VideoPlayerScreen(videoURL: widget.videoURL, lesson: widget.section.lesson[index]))
+                                            builder: (context) => VideoPlayerWithExercisesPage(videoURL: widget.videoURL, lesson: widget.section.lesson[index]))
                                     );
                                   },
                                   child: Card(

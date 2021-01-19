@@ -1,7 +1,4 @@
 import 'package:DARKEN/APIs/APIServer.dart';
-import 'package:DARKEN/Models/CategoryModel.dart';
-import 'package:DARKEN/Models/CourseModelOnline.dart';
-import 'package:DARKEN/Models/SearchCourseModel.dart';
 import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Screens/Home/CourseDetailPage.dart';
 import 'package:flutter/material.dart';

@@ -39,10 +39,9 @@ class _CoursesFilteredPage extends State<CoursesFilteredPage> {
     else if (cateID == "MADE FOR YOU")
       listCourses = await APIServer().fetchTopRateCourses(10, 1);
     else {
-      print(cateID);
+      print("CateID: " + cateID);
       category = await APIServer().fetchCategoryWithID(cateID);
       listSearchCourses = await APIServer().fetchCoursesFromCategoryID(cateID);
-      print(listSearchCourses[0].id);
       setState(() {
         cateID = category.name;
       });

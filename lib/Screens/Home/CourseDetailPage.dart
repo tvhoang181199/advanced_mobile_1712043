@@ -5,6 +5,7 @@ import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:share/share.dart';
 
 import 'package:DARKEN/Styling/AppColors.dart';
 
@@ -152,7 +153,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _isLiked ? Container(
-                            padding: EdgeInsets.only(left: 50, top: 15, right:15),
+                            padding: EdgeInsets.only(left: 15, top: 15, right:10),
                             height: 50,
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
@@ -161,7 +162,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                               child: Text('Liked', style: TextStyle(color: Colors.white)),
                             ),
                           ) : Container(
-                            padding: EdgeInsets.only(left: 50, top: 15, right:15),
+                            padding: EdgeInsets.only(left: 15, top: 15, right:10),
                             height: 50,
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(color: AppColors.themeColor)),
@@ -171,7 +172,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                             ),
                           ),
                           _isJoined ? Container(
-                            padding: EdgeInsets.only(left: 15, top: 15, right: 50),
+                            padding: EdgeInsets.only(left: 10, top: 15, right: 10),
                             height: 50,
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
@@ -180,7 +181,7 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                               child: Text('Joined', style: TextStyle(color: Colors.white)),
                             ),
                           ) : Container(
-                            padding: EdgeInsets.only(left: 15, top: 15, right: 50),
+                            padding: EdgeInsets.only(left: 10, top: 15, right: 10),
                             height: 50,
                             child: RaisedButton(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3), side: BorderSide(color: AppColors.themeColor)),
@@ -189,6 +190,18 @@ class _CourseDetailPage extends State<CourseDetailPage> {
                               child: Text('Join', style: TextStyle(color: AppColors.themeColor)),
                             ),
                           ),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, top: 15, right: 15),
+                            height: 50,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+                              onPressed: (){
+                                Share.share("Check out this course on: http://dev.letstudy.org/course-detail/" + courseID);
+                              },
+                              color: AppColors.themeColor,
+                              child: Text('Share', style: TextStyle(color: Colors.white)),
+                            ),
+                          )
                         ],
                       ),
                     )

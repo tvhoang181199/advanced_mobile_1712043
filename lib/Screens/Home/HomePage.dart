@@ -2,7 +2,6 @@ import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CourseModelOnline.dart';
 import 'package:DARKEN/Models/UserFavoriteCoursesModel.dart';
 import 'package:DARKEN/Models/UserProcessCoursesModel.dart';
-import 'package:DARKEN/Screens/Home/CoursesFilteredPage.dart';
 import 'package:DARKEN/Screens/Home/FavoriteCoursesPage.dart';
 import 'package:DARKEN/Screens/Home/UserCourseDetailPage.dart';
 import 'package:flutter/material.dart';

@@ -1,44 +1,54 @@
+import 'dart:async';
 import 'package:DARKEN/APIs/APIServer.dart';
 import 'package:DARKEN/Models/CourseWithLessonModel.dart';
-import 'package:DARKEN/Screens/Home/LessonPage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
+import 'package:DARKEN/Models/ExerciseModel.dart';
 import 'package:DARKEN/Styling/AppColors.dart';
+import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class UserCourseDetailPage extends StatefulWidget {
-  static String tag = '/user-course-detail-page';
-
-  final String courseID;
-  UserCourseDetailPage({Key key, @required this.courseID}) : super(key: key);
-
+class VideoPlayerWithExercisesPage extends StatefulWidget {
+  String videoURL;
+  Lesson lesson;
+  VideoPlayerWithExercisesPage({Key key, this.videoURL, this.lesson}): super(key: key);
   @override
-  _UserCourseDetailPage createState() => new _UserCourseDetailPage(courseID);
+  _VideoPlayerWithExercisesPage createState() => _VideoPlayerWithExercisesPage();
 }
 
-class _UserCourseDetailPage extends State<UserCourseDetailPage> {
-  String courseID;
-  _UserCourseDetailPage(this.courseID);
+class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> {
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
 
   bool _isLoading = false;
 
-  CourseWithLessonModel course;
+  List<ExerciseModel> listExercises;
 
   void _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    print("CourseID: " + courseID);
-    course = await APIServer().fetchCourseWithLession(courseID);
+    print("LessonID: " + widget.lesson.id);
+    listExercises = await APIServer().fetchExercisesWithLessonID(widget.lesson.id);
     setState(() {
       _isLoading = false;
     });
   }
 
-  @override void initState() {
-    super.initState();
+  @override
+  void initState() {
+
     _fetchData();
+
+    _controller = VideoPlayerController.network(widget.videoURL);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,7 +82,7 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          course == null ? "" : "${course.title.toUpperCase()}",
+          widget.lesson.name,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -81,19 +91,29 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
       ),
       body: Stack(
         children: <Widget>[
-          course == null ? Container() : Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
+          Container(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Container(
-                      height: 200,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.network(course.imageUrl, fit: BoxFit.fitHeight),
+                      height: 250,
+                      child: FutureBuilder(
+                        future: _initializeVideoPlayerFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return AspectRatio(
+                              aspectRatio: 16/9,
+                              child: Container(
+                                child: VideoPlayer(_controller),
+                              ),
+                            );
+                          }
+                          else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
                       ),
                     ),
                     Container(
@@ -109,24 +129,16 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text(course.description),
+                      child: Text("Video Name: " + widget.lesson.videoName),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text("Rating: " + course.ratedNumber.toString()),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text("Total hours: " + course.totalHours.toString()),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                      child: Text("Requirement: " + course.requirement.map((e) => e).toString()),
+                      child: Text("Hours: " + widget.lesson.hours.toString()),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                       child: Text(
-                        "SESSIONS",
+                        "EXERCISES",
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -134,22 +146,20 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
                         ),
                       ),
                     ),
-                    course == null ? Container() : Container(
-                        height: course.section.length.toDouble()*60,
+                    listExercises == null || listExercises.length == 0 ? Container(
+                      height: 50,
+                      child: Center(
+                        child: Text("NO EXERCISES FOUND!", style: TextStyle(color: AppColors.greyColor, fontSize: 15)),
+                      ),
+                    ) : Container(
+                        height: listExercises.length.toDouble()*60,
                         child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: course.section.length,
+                          itemCount:listExercises.length,
                           itemBuilder: (context, index) {
                             return Container(
                                 child : GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              fullscreenDialog: true,
-                                              builder: (context) => LessonPage(section: course.section[index], videoURL: course.promoVidUrl)
-                                          )
-                                      );
-                                    },
+                                    onTap: () {},
                                     child: Card(
                                       child: Container(
                                           padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
@@ -158,7 +168,7 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                  "Session ${index+1}: " + course.section[index].name,
+                                                  "Exercise ${index+1}: " + listExercises[index].title,
                                                   style: TextStyle(fontWeight: FontWeight.bold)),
                                             ],
                                           )
@@ -179,6 +189,23 @@ class _UserCourseDetailPage extends State<UserCourseDetailPage> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.themeColor,
+        onPressed: () {
+          setState(() {
+            if (_controller.value.isPlaying) {
+              _controller.pause();
+            }
+            else {
+              _controller.play();
+            }
+          });
+        },
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+

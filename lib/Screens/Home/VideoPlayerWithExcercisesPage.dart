@@ -139,7 +139,7 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
   void _onReceiveProgress(int received, int total) {
     if (total != -1) {
       setState(() {
-        _progressDownload = (received / total * 100).toStringAsFixed(0) + "%";
+        _progressDownload = "Downloading... " + (received / total * 100).toStringAsFixed(0) + "%";
       });
     }
   }
@@ -220,19 +220,19 @@ class _VideoPlayerWithExercisesPage extends State<VideoPlayerWithExercisesPage> 
         Align(
           child: Container(
             color: Colors.grey[700],
-            width: 100,
-            height: 100,
+            width: 200,
+            height: 120,
             child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: new Center(
                         child: new CircularProgressIndicator()
                     )
                 ),
                 Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(10),
                       child: Text(
                         _progressDownload,
                         textAlign: TextAlign.center,
